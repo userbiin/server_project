@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang = "ko">
+<head>
+    <meta charset = "UTF-8">
+    <title> 친구 관리 페이지 </title>
+</head>
+<body>
+    <h1>👥 친구 관리 </h1>
+
+    <section>
+        <h2> 친구 검색</h2>
+        <form method="POST" action="/search_user">
+            <input type="text" name="username" placeholder="사용자 이름 입력">
+            <button type="submit"> search </button>
+        </form>
+
+        {% if search_result %}
+            <p> 🔍 {{ search_result.name }} (MBTI: {{ search_result.mbti }})</p>
+            <form method="POST" action="/request_friend">
+                <input type="hidden" name="friend_id" value="{{ search_result.id }}">
+                <button type="submit">친구 요청</button>
+            </form>
+        
+        {% elif searched %}
+            <p> ❌ 사용자를 찾을 수 없습니다. </p>
+        {% endif %}
+    </section>
+
+    <hr>
+
+    <section>
+        <h2>받은 친구 요청</h2>
+        {% if pending_requests %}
+            <ul> 
+                {% for req in pending_requests}
+                <li>
+                    {{ req.name }} (MBTI: {{req.mbti}})
+                    <form method="POST" action="/accept_friend" style="display:inline">
+                        <input type="hidden" name="friend_id" value="{{ friend.id }}"
+                        <button type="submint">삭제</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p> 등록된 친구가 없습니다. </p>
+        {% endif %}
+    </section>
+
+    <hr>
+
+    <footer>
+        <a href="/">
+    </footer>
+</body>
+</html>
