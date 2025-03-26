@@ -30,15 +30,18 @@
 
     <section>
         <h2>받은 친구 요청</h2>
+    
         {% if pending_requests %}
             <ul> 
-                {% for req in pending_requests %}
+                {% for friend in pending_requests %}
+                
                 <li>
-                    {{ req.name }} (MBTI: {{req.mbti}})
-                    <form method="POST" action="/accept_friend" style="display:inline">
-                        <input type="hidden" name="friend_id" value="{{ friend.id }}">
-                        <button type="submint">삭제</button>
-                    </form>
+                    {{ friend.name }} (MBTI: {{ friend.mbti }})
+                    <form method="POST" action="/delete_friend/{{ friend.id }}" style="display:inline;">
+                        <button type="submit">삭제</button>
+
+                    <form action="/accept_friend/{{ friend.id }}" method="POST" style="display:inline;">
+                        <button type="submit">수락</button>
                 </li>
                 {% endfor %}
             </ul>

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, redirect, url_for
 import mysql.connector
 
 friend_bp = Blueprint('friend', __name__)
@@ -41,3 +41,29 @@ def show_friends_page():
                            friends=friends,
                            search_result=None,
                            searched=False)
+
+# 친구 요청 수락     
+@friend_bp.route('/accept_friend/<int:request_id>', methods=['POST'])
+def accept_friend(request_id):
+    cursor.excute("""
+                  UPDATE freinds
+                  SET status = 'accept'
+                  WHERE id =%s
+                  """, (request_id))
+    db.commit()
+    return redirect(url_for('friend.show_friends_page'))
+
+
+# 친구 삭제
+@friend_bp.route('/delete_friend/<int:friend_id>', methods=['POST'])
+def delete_friend(friend_id):
+    # user_id <-> friend_id 양방향 고려
+    cursor.execute("""
+        DELETE FROM friends
+        WHERE 
+            (user_id = %s AND friend_id = %s)
+            OR
+            (user_id = %s AND friend_id = %s)
+    """, (CURRENT_USER_ID, friend_id, friend_id, CURRENT_USER_ID))
+    db.commit()
+    return redirect(url_for('friend.show_friends_page'))
