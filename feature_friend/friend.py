@@ -36,7 +36,7 @@ def show_friends_page():
     """, (CURRENT_USER_ID, CURRENT_USER_ID, CURRENT_USER_ID))
     friends = cursor.fetchall()
 
-    return render_template('freindpage.html',
+    return render_template('friendpage.html',
                            pending_requests=pending_requests,
                            friends=friends,
                            search_result=None,
