@@ -4,16 +4,16 @@ import mysql.connector
 friend_bp = Blueprint('friend', __name__)
 db = mysql.connector.connect(
     host="localhost", 
-    user="flaskuser", 
+    user="flaskuser",  # mysql 새사용자 생성->flaskuser
     password="1234", 
     database="mbti_db")
 
-cursor = db.cursor(dictionary=True)
+cursor = db.cursor(dictionary=True) # 데이터 dict 형태로 전달
 CURRENT_USER_ID = 1
 
 @friend_bp.route('/friends')
 def show_friends_page():
-    # ✅ 1. 받은 친구 요청 (나에게 온 요청 중 아직 수락하지 않은 것)
+    # 친구 요청
     cursor.execute("""
         SELECT f.id, u.name, u.mbti
         FROM friends f
@@ -22,7 +22,7 @@ def show_friends_page():
     """, (CURRENT_USER_ID,))
     pending_requests = cursor.fetchall()
 
-    # ✅ 2. 친구 목록 (내가 수락한 친구 관계)
+    # 친구 목록 조회
     cursor.execute("""
         SELECT u.id, u.name, u.mbti
         FROM friends f
