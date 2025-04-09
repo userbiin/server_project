@@ -1,0 +1,62 @@
+<!-- my_feed.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>내 피드</title>
+</head>
+<body>
+
+<!-- 공통 버튼 -->
+<button onclick="location.href='/myFeed'">내 피드</button>
+<button onclick="location.href='/feedSearch'">친구 피드</button>
+
+<h2>내 피드에 글 작성</h2>
+
+<!-- 댓글 입력창 -->
+<div class="comment-box">
+    <h2>피드를 올립시다.</h2>
+    <form action="/myFeed" method="post" enctype="multipart/form-data" onsubmit="return isTextareaFill()">
+        <textarea id="upload_comment" name="upload_comment" placeholder="피드에 작성할 글 입력" required></textarea>
+        <input type="file" name="upload_file" accept="image/*">
+        <input type="submit" value="upload">
+    </form>
+
+    <script>
+        function isTextareaFill() {
+            const comment = document.getElementById('upload_comment').value.trim(); //trim은 공백제거
+            if (comment === "") { //===는 값과 타입 모두 검사
+                return false;
+            } else {
+                alert("피드 등록 완료!");
+                return true;
+            }
+        }
+    </script>
+</div>
+
+
+<table>
+    <tr>
+        <th>글 순서</th>
+        <th>업로드 날짜</th>
+        <th>내용</th>
+    </tr>
+    {% for i in range(table|length) %}
+        <tr>
+            <td>{{ table|length - i }}</td>
+            <td>{{ table[table|length - i-1][4] }}</td> <!-- 업로드 날짜 -->
+            <td>
+                {% if table[table|length - i-1][3] %}
+                    <img src="{{ url_for('static', filename=table[table|length - i-1][3].split('static/')[-1]) }}"
+                         width="100">
+                {% endif %}
+                <p>{{ table[table|length - i-1][2] }}</p>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+
+</body>
+</html>
