@@ -45,11 +45,11 @@ def show_friends_page():
 # 친구 요청 수락     
 @friend_bp.route('/accept_friend/<int:request_id>', methods=['POST'])
 def accept_friend(request_id):
-    cursor.excute("""
-                  UPDATE freinds
-                  SET status = 'accept'
+    cursor.execute("""
+                  UPDATE friends
+                  SET status = 'accepted'
                   WHERE id =%s
-                  """, (request_id))
+                  """, (request_id,))
     db.commit()
     return redirect(url_for('friend.show_friends_page'))
 
