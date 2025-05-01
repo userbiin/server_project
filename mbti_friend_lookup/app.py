@@ -3,7 +3,6 @@ import sqlite3
 
 app = Flask(__name__)
 
-# MBTI 궁합 정보
 def get_compatible_mbti(mbti):
     compatibility = {
         'ENTJ': ['ISFP', 'INFP', 'ESFP', 'ESTP', 'ISTP', 'INTP'],
