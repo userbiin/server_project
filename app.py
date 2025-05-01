@@ -1,4 +1,4 @@
-from flask import Flask, render_template 
+from flask import Flask, render_template, session
 import sys
 import os
 
@@ -8,6 +8,12 @@ from feature_friend.friend import friend_bp
 
 app = Flask(__name__)
 app.register_blueprint(friend_bp)
+# 테스트용
+app.secret_key = 'any-random-string'  # 세션 사용을 위한 키 임시부여
+
+@app.before_request
+def simulate_login():
+    session['user_id'] = 4  # 'user2'의 id라고 가정
 
 @app.route('/')
 def index():
