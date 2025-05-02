@@ -97,13 +97,18 @@ def delete_friend(friend_id):
 # 사용자 검색
 @friend_bp.route('/search_user', methods=['POST'])
 def search_user():
-    username = request.form['username']
-    cursor.execute("SELECT * FROM users WHERE name = %s", (username,))
-    result = cursor.fetchone()
-
     CURRENT_USER_ID = session.get('user_id')
     if not CURRENT_USER_ID:
         return redirect(url_for('login'))
+
+    username = request.form['username']
+
+    # 자기 자신은 제외한 이름 검색
+    cursor.execute("""
+        SELECT * FROM users 
+        WHERE name = %s AND id != %s
+    """, (username, CURRENT_USER_ID))
+    results = cursor.fetchall()
 
     # 받은 요청
     cursor.execute("""
@@ -126,8 +131,10 @@ def search_user():
     return render_template('friendpage.html',
                            pending_requests=pending_requests,
                            friends=friends,
-                           search_result=result if result else None,
+                           search_result=results,
                            searched=True)
+
+
 
 # 친구 요청 보내기
 @friend_bp.route('/request_friend', methods=['POST'])
