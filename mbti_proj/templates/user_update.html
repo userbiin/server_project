@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>회원정보 수정</title>
+</head>
+<body>
+    <h1>회원정보 수정</h1>
+    <form method="POST" action="/user_update">
+        <p>이름: <input type="text" name="name" value="{{ user.name }}" required></p>
+        <p>MBTI: <input type="text" name="mbti" value="{{ user.mbti }}" maxlength="4" required></p>
+        <p>생년월일: <input type="date" name="birth" value="{{ user.birth }}"></p>
+        <p>이메일: <input type="email" name="email" value="{{ user.email }}" required></p>
+        <p>주소: <input type="text" name="address" value="{{ user.address }}"></p>
+        <p>자기소개:<br><textarea name="introduction" rows="4" cols="40">{{ user.introduction }}</textarea></p>
+        <p><input type="submit" value="수정하기"></p>
+    </form>
+</body>
+</html>

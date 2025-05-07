@@ -129,17 +129,17 @@ def mypage():
     if 'user_id' not in session:
         return redirect(url_for('user_login'))
 
-    user_id = session['user_id']
-    search = request.args.get('search', '')
-    like_pattern = f"%{search}%"
+    user_id = session['user_id'] #현재 로그인 사용자 ID
+    search = request.args.get('search', '') #검색창에 입력된 문자열 받기
+    like_pattern = f"%{search}%" #sql의 LIKE 문으로 바꿔줌 
 
     with db.cursor() as cursor:
-        # 사용자 정보 가져오기
+        # 로그인한 사용자 전체정보 가져오기
         cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
         user = cursor.fetchone()
 
         # 친구 목록 가져오기 (검색 조건 여부에 따라 다르게)
-        if search:
+        if search: #검색어 있는 경우 
             sql = """
                 SELECT DISTINCT u.id, u.name, u.login_id, u.mbti
                 FROM friends f
@@ -157,7 +157,7 @@ def mypage():
                   )
             """
             cursor.execute(sql, (user_id, user_id, user_id, like_pattern, like_pattern, like_pattern))
-        else:
+        else: #검색어 없을 
             sql = """
                 SELECT DISTINCT u.id, u.name, u.login_id, u.mbti
                 FROM friends f
@@ -175,9 +175,41 @@ def mypage():
 
     return render_template('mypage.html', user=user, friends=friends, friend_count=friend_count)
 
-@app.route('/user_update')
+@app.route('/user_update', methods=['GET', 'POST'])
 def user_update():
-    return "<h2>여기서 사용자 정보 수정 기능을 구현할 예정입니다.</h2>"
+    #로그인 안 되어있으면 login 페이지로 
+    if 'user_id' not in session:
+        return redirect(url_for('user_login'))
+
+    #로그인한 사용자 id user_id에 저장
+    user_id = session['user_id']
+
+    if request.method == 'POST':
+        name = request.form['name']
+        mbti = request.form['mbti']
+        email = request.form['email']
+        birth = request.form['birth']
+        address = request.form['address']
+        introduction = request.form['introduction']
+
+        sql = """
+            UPDATE users
+            SET name=%s, mbti=%s, email=%s, birth=%s,
+                address=%s, introduction=%s
+            WHERE id=%s
+        """
+        with db.cursor() as cursor:
+            cursor.execute(sql, (name, mbti, email, birth, address, introduction, user_id))
+            db.commit()
+
+        return redirect(url_for('mypage'))
+
+    # GET 일 때 로그인한 사용자 정보 가져와서 user_update.html로 넘김
+    with db.cursor() as cursor:
+        cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
+        user = cursor.fetchone()
+
+    return render_template('user_update.html', user=user)
 
 if __name__ == '__main__':
     app.run(debug = True, host="0.0.0.0", port=5000)
