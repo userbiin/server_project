@@ -1,11 +1,15 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 import os
 import pymysql
 from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash
 from datetime import datetime
 
 #Flask객체 생성
 app = Flask(__name__)
+
+#세션 암호화용
+app.secret_key = 'your_secret_key here'
 
 #업로드 폴더 설정
 UPLOAD_FOLDER = 'static/uploads'
@@ -90,9 +94,33 @@ def user_register():
 
     return render_template('user_register.html')
 
-@app.route('/user_login')
+@app.route('/user_login', methods = ['GET', 'POST'])
 def user_login():
+    if request.method == 'POST':
+        login_id = request.form['login_id']
+        password = request.form['password']
+
+        with db.cursor() as cursor:
+            cursor.execute("SELECT * FROM users WHERE login_id = %s", (login_id,))
+            user = cursor.fetchone()
+
+        if user and check_password_hash(user['password'], password):
+            #로그인 성공하면 세션에 사용자 ID 저장
+            session['user_id'] = user['id']
+            session['login_id'] = user['login_id']
+            session['name'] = user['name']
+            return redirect(url_for('home'))
+        else:
+            #로그인 실패
+            flash("ID 또는 비밀번호가 틀렸습니다.")
+            return redirect(url_for('user_login'))
+
     return render_template('user_login.html') 
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.run(debug = True, host="0.0.0.0", port=5000)

@@ -1,5 +1,6 @@
 CREATE TABLE users(
     id INT AUTO_INCREMENT PRIMARY KEY,
+    login_id VARCHAR(50) UNIQUE NOT NULL,
     name VARCHAR(50) NOT NULL,
     birth DATE,
     mbti VARCHAR(4),
