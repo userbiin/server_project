@@ -105,13 +105,14 @@ def user_login():
             user = cursor.fetchone()
 
         if user and check_password_hash(user['password'], password):
-            #로그인 성공하면 세션에 사용자 ID 저장
+            #로그인 성공하면 flask 세션에 사용자 정보 저장해서 로그인 상태 유지지
             session['user_id'] = user['id']
             session['login_id'] = user['login_id']
             session['name'] = user['name']
             return redirect(url_for('home'))
         else:
             #로그인 실패
+            #flash 메세지 
             flash("ID 또는 비밀번호가 틀렸습니다.")
             return redirect(url_for('user_login'))
 
@@ -121,6 +122,62 @@ def user_login():
 def logout():
     session.clear()
     return redirect(url_for('home'))
+
+@app.route('/mypage')
+def mypage():
+    #로그인 안 되어 있으면 로그인 창으로 
+    if 'user_id' not in session:
+        return redirect(url_for('user_login'))
+
+    user_id = session['user_id']
+    search = request.args.get('search', '')
+    like_pattern = f"%{search}%"
+
+    with db.cursor() as cursor:
+        # 사용자 정보 가져오기
+        cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
+        user = cursor.fetchone()
+
+        # 친구 목록 가져오기 (검색 조건 여부에 따라 다르게)
+        if search:
+            sql = """
+                SELECT u.id, u.name, u.login_id, u.mbti
+                FROM friends f
+                JOIN users u
+                  ON (
+                      (u.id = f.receiver_id AND f.requester_id = %s)
+                      OR (u.id = f.requester_id AND f.receiver_id = %s)
+                  )
+                WHERE f.status = 'accepted'
+                  AND u.id != %s
+                  AND (
+                      u.name LIKE %s OR
+                      u.login_id LIKE %s OR
+                      u.mbti LIKE %s
+                  )
+            """
+            cursor.execute(sql, (user_id, user_id, user_id, like_pattern, like_pattern, like_pattern))
+        else:
+            sql = """
+                SELECT u.id, u.name, u.login_id, u.mbti
+                FROM friends f
+                JOIN users u
+                  ON (
+                      (u.id = f.receiver_id AND f.requester_id = %s)
+                      OR (u.id = f.requester_id AND f.receiver_id = %s)
+                  )
+                WHERE f.status = 'accepted' AND u.id != %s
+            """
+            cursor.execute(sql, (user_id, user_id, user_id))
+
+        friends = cursor.fetchall()
+        friend_count = len(friends)
+
+    return render_template('mypage.html', user=user, friends=friends, friend_count=friend_count)
+
+@app.route('/user_update')
+def user_update():
+    return "<h2>여기서 사용자 정보 수정 기능을 구현할 예정입니다.</h2>"
 
 if __name__ == '__main__':
     app.run(debug = True, host="0.0.0.0", port=5000)

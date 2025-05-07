@@ -14,8 +14,8 @@ CREATE TABLE users(
 
 CREATE TABLE friends(
     id INT AUTO_INCREMENT PRIMARY KEY,
-    requester_id INT,
-    receiver_id INT,
+    requester_id INT NOT NULL,
+    receiver_id INT NOT NULL,
     status ENUM('waiting', 'accept', 'reject') DEFAULT 'waiting',
     requested_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (requester_id) REFERENCES users(id),
