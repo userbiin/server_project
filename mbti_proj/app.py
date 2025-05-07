@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from datetime import datetime
 
+
 #Flask객체 생성
 app = Flask(__name__)
 
@@ -210,7 +211,25 @@ def user_update():
         cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
         user = cursor.fetchone()
 
-    return render_template('user_update.html', user=user)
+    return render_template('user_update.html', user=user)\
+
+@app.route('/delete_user', methods=['POST'])
+def delete_user():
+    if 'user_id' not in session:
+        return redirect(url_for('user_login'))  # 경로도 user_login으로 수정
+
+    user_id = session['user_id']
+
+    with db.cursor() as cursor:
+        # 먼저 친구 관계 전부 삭제 (요청자거나 수락자인 경우 모두)
+        cursor.execute("DELETE FROM friends WHERE requester_id = %s OR receiver_id = %s", (user_id, user_id))
+        # 그 다음 사용자 삭제제
+        cursor.execute("DELETE FROM users WHERE id = %s", (user_id,))
+        db.commit()
+
+    session.clear()
+    return redirect(url_for('home'))
+
 
 if __name__ == '__main__':
     app.run(debug = True, host="0.0.0.0", port=5000)
