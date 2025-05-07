@@ -184,6 +184,7 @@ def user_update():
     #로그인한 사용자 id user_id에 저장
     user_id = session['user_id']
 
+    #post일 때 기존 정보 수정함. 
     if request.method == 'POST':
         name = request.form['name']
         mbti = request.form['mbti']
