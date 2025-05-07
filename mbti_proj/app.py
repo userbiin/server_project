@@ -141,7 +141,7 @@ def mypage():
         # 친구 목록 가져오기 (검색 조건 여부에 따라 다르게)
         if search:
             sql = """
-                SELECT u.id, u.name, u.login_id, u.mbti
+                SELECT DISTINCT u.id, u.name, u.login_id, u.mbti
                 FROM friends f
                 JOIN users u
                   ON (
@@ -159,7 +159,7 @@ def mypage():
             cursor.execute(sql, (user_id, user_id, user_id, like_pattern, like_pattern, like_pattern))
         else:
             sql = """
-                SELECT u.id, u.name, u.login_id, u.mbti
+                SELECT DISTINCT u.id, u.name, u.login_id, u.mbti
                 FROM friends f
                 JOIN users u
                   ON (
