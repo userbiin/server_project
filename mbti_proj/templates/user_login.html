@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login Page</title>
+    <style>
+        label, input, button {
+            margin: 8px;
+        }
+    </style>
+</head>
+<body>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for msg in messages %}
+                    <li style="color: red;">{{ msg }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <form action="/user_login" method="POST">
+        <h2>Login</h2>
+        <label for="username">ID:</label>
+        <input type="text" name="login_id" id="login_id" required>
+        <br>
+        <label for="password">비밀번호:</label>
+        <input type="password" name="password" id="password" required>
+        <br>
+        <button type=submit>로그인</button>
+    </form>
+</body>
+</html>

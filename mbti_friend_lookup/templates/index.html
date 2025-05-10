@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MBTI 친구 찾기</title>
+</head>
+<body>
+    <h1>MBTI 친구 조회</h1>
+
+    <form method="post">
+        <label>내 MBTI 입력:</label>
+        <input type="text" name="my_mbti" required>
+        <input type="submit" value="궁합 보기">
+    </form>
+
+    {% if compatible %}
+        <h2>{{ my_mbti }}와 궁합이 맞는 MBTI 유형들:</h2>
+        {% for mbti in compatible %}
+            <form action="/search" method="get" style="display:inline;">
+                <input type="hidden" name="target_mbti" value="{{ mbti }}">
+                <button type="submit">{{ mbti }}</button>
+            </form>
+        {% endfor %}
+    {% endif %}
+</body>
+</html>

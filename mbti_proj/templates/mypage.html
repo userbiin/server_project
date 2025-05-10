@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>마이페이지</title>
+</head>
+<body>
+    <h1>{{ user.name }}님의 마이페이지</h1>
+
+    <h2>내 정보</h2>
+    <ul>
+        <li><strong>아이디:</strong> {{ user.login_id }}</li>
+        <li><strong>이메일:</strong> {{ user.email }}</li>
+        <li><strong>MBTI:</strong> {{ user.mbti }}</li>
+        <li><strong>생일:</strong> {{ user.birth }}</li>
+        <li><strong>주소:</strong> {{ user.address }}</li>
+        <li><strong>자기소개:</strong> {{ user.introduction }}</li>
+        {% if user.photo_filename %}
+            <li><strong>프로필 사진:</strong><br>
+                <img src="{{ url_for('static', filename='uploads/' + user.photo_filename) }}" width="150">
+            </li>
+        {% endif %}
+    </ul>
+
+    <a href="{{ url_for('user_update') }}">[정보 수정]</a>
+
+    <hr>
+
+    <h2>친구 목록 (총 {{ friend_count }}명)</h2>
+
+    <form method="GET" action="{{ url_for('mypage') }}">
+        <input type="text" name="search" placeholder="이름, ID, MBTI 검색"
+               value="{{ request.args.get('search', '') }}">
+        <input type="submit" value="검색">
+    </form>
+
+    <ul>
+        {% for friend in friends %}
+            <li>{{ friend.name }} (ID: {{ friend.login_id }}, MBTI: {{ friend.mbti }})</li>
+        {% else %}
+            <li>친구가 없습니다.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

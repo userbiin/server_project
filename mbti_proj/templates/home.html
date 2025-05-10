@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>MBTI 친구 플랫폼</title>
+</head>
+<body>
+    <h1>MBTI 친구 매칭 플랫폼</h1>
+    {% if session.get('user_id') %}
+        <p>환영합니다, <strong>{{ session.name }}</strong>님!</p>
+        <ul>
+            <li><a href="/friend">친구 관리</a></li>
+            <li><a href="/mypage">마이페이지</a></li>
+            <li><a href="/logout">로그아웃</a></li>
+        </ul>
+    {% else %}
+        <p><a href="{{ url_for('user_login') }}">로그인</a> 또는 <a href="{{ url_for('user_register') }}">회원가입</a> 해주세요.</p>
+    {% endif %}
+    <h2>메뉴</h2>
+    <ul>
+        <li><a href="/user_register">회원가입</a></li>
+        <li><a href="/user_search">사용자 조회</a></li>
+        <li><a href="/mbti_info">MBTI 특징</a></li>
+    </ul>
+</body>
+</html>
+

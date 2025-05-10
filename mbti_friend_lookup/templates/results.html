@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ target_mbti }} 사용자</title>
+</head>
+<body>
+    <h1>{{ target_mbti }}를 가진 사용자 목록</h1>
+
+    {% if results %}
+        <ul>
+        {% for name, mbti in results %}
+            <li>{{ name }} ({{ mbti }})</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>해당 MBTI 사용자가 없습니다.</p>
+    {% endif %}
+
+    <a href="/">← 다시 검색</a>
+</body>
+</html>
