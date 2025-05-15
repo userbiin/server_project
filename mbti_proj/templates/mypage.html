@@ -3,43 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <title>마이페이지</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <!-- Favicon -->
+    <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="icon">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap" rel="stylesheet">
+
+    <!-- Icons & Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='lib/animate/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 </head>
+
 <body>
-    <h1>{{ user.name }}님의 마이페이지</h1>
+<div class="container-xxl bg-white p-0">
+    <!-- Navbar -->
+    <div class="container-fluid nav-bar bg-transparent">
+        <nav class="navbar navbar-expand-lg bg-white navbar-light py-0 px-4">
+            <a href="/" class="navbar-brand d-flex align-items-center text-center">
+                <div class="icon p-2 me-2">
+                    <img class="img-fluid" src="{{ url_for('static', filename='img/icon-deal.png') }}" style="width: 30px; height: 30px;">
+                </div>
+                <h1 class="m-0 text-primary">My Page</h1>
+            </a>
+        </nav>
+    </div>
 
-    <h2>내 정보</h2>
-    <ul>
-        <li><strong>아이디:</strong> {{ user.login_id }}</li>
-        <li><strong>이메일:</strong> {{ user.email }}</li>
-        <li><strong>MBTI:</strong> {{ user.mbti }}</li>
-        <li><strong>생일:</strong> {{ user.birth }}</li>
-        <li><strong>주소:</strong> {{ user.address }}</li>
-        <li><strong>자기소개:</strong> {{ user.introduction }}</li>
-        {% if user.photo_filename %}
-            <li><strong>프로필 사진:</strong><br>
-                <img src="{{ url_for('static', filename='uploads/' + user.photo_filename) }}" width="150">
-            </li>
-        {% endif %}
-    </ul>
+    <!-- Profile Header -->
+    <div class="container py-5">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h1 class="mb-4">{{ user.name }}님의 마이페이지</h1>
+        </div>
 
-    <a href="{{ url_for('user_update') }}">[정보 수정]</a>
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="bg-light rounded p-4 text-center wow fadeIn" data-wow-delay="0.2s">
+                    {% if user.photo_filename %}
+                        <img src="{{ url_for('static', filename='uploads/' + user.photo_filename) }}" class="img-fluid rounded mb-3" width="150">
+                    {% else %}
+                        <i class="fas fa-user-circle fa-6x text-muted mb-3"></i>
+                    {% endif %}
+                    <h5 class="fw-bold mb-0">{{ user.name }}</h5>
+                    <small class="text-muted">{{ user.login_id }}</small>
+                    <br><a href="{{ url_for('user_update') }}" class="btn btn-sm btn-primary mt-3">정보 수정</a>
+                </div>
+            </div>
 
-    <hr>
+            <div class="col-lg-8">
+                <div class="bg-light rounded p-4 wow fadeIn" data-wow-delay="0.3s">
+                    <h5 class="mb-3">내 정보</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>이메일:</strong> {{ user.email }}</li>
+                        <li class="list-group-item"><strong>MBTI:</strong> {{ user.mbti }}</li>
+                        <li class="list-group-item"><strong>생일:</strong> {{ user.birth }}</li>
+                        <li class="list-group-item"><strong>주소:</strong> {{ user.address }}</li>
+                        <li class="list-group-item"><strong>자기소개:</strong><br>{{ user.introduction }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
-    <h2>친구 목록 (총 {{ friend_count }}명)</h2>
+        <!-- 친구 목록 -->
+        <div class="mt-5 wow fadeInUp" data-wow-delay="0.4s">
+            <h3 class="mb-3">친구 목록 (총 {{ friend_count }}명)</h3>
+            <form method="GET" action="{{ url_for('mypage') }}" class="input-group mb-3">
+                <input type="text" name="search" class="form-control" placeholder="이름, ID, MBTI 검색" value="{{ request.args.get('search', '') }}">
+                <button class="btn btn-primary" type="submit">검색</button>
+            </form>
+            <ul class="list-group">
+                {% for friend in friends %}
+                    <li class="list-group-item">
+                        <i class="bi bi-person-fill text-primary me-2"></i>
+                        {{ friend.name }} (ID: {{ friend.login_id }}, MBTI: {{ friend.mbti }})
+                    </li>
+                {% else %}
+                    <li class="list-group-item text-muted">친구가 없습니다.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 
-    <form method="GET" action="{{ url_for('mypage') }}">
-        <input type="text" name="search" placeholder="이름, ID, MBTI 검색"
-               value="{{ request.args.get('search', '') }}">
-        <input type="submit" value="검색">
-    </form>
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
 
-    <ul>
-        {% for friend in friends %}
-            <li>{{ friend.name }} (ID: {{ friend.login_id }}, MBTI: {{ friend.mbti }})</li>
-        {% else %}
-            <li>친구가 없습니다.</li>
-        {% endfor %}
-    </ul>
+<!-- JS -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='lib/wow/wow.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>

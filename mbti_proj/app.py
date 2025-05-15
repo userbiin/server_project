@@ -3,6 +3,7 @@ import os
 import pymysql
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
+from werkzeug.utils import secure_filename
 from datetime import datetime
 
 
@@ -16,6 +17,10 @@ app.secret_key = 'your_secret_key here'
 UPLOAD_FOLDER = 'static/uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+ALLOWED_EXTENSIONS = {'png','jpg', 'jpeg', 'gif'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 #mysql 연결
 db = pymysql.connect(
@@ -193,25 +198,42 @@ def user_update():
         birth = request.form['birth']
         address = request.form['address']
         introduction = request.form['introduction']
+        new_password = request.form.get('password')
+        photo = request.files.get('photo')
 
-        sql = """
-            UPDATE users
-            SET name=%s, mbti=%s, email=%s, birth=%s,
-                address=%s, introduction=%s
-            WHERE id=%s
-        """
+        # 사용자 기본 정보 수정
         with db.cursor() as cursor:
-            cursor.execute(sql, (name, mbti, email, birth, address, introduction, user_id))
+            cursor.execute("""
+                UPDATE users
+                SET name=%s, mbti=%s, email=%s, birth=%s,
+                    address=%s, introduction=%s
+                WHERE id=%s
+            """, (name, mbti, email, birth or None, address, introduction, user_id))
             db.commit()
+
+        # 비밀번호 수정 (입력된 경우에만)
+        if new_password:
+            hashed_pw = generate_password_hash(new_password)
+            with db.cursor() as cursor:
+                cursor.execute("UPDATE users SET password=%s WHERE id=%s", (hashed_pw, user_id))
+                db.commit()
+
+        # 프로필 사진 수정 (파일이 선택된 경우에만)
+        if photo and photo.filename:
+            photo_filename = secure_filename(photo.filename)
+            photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photo_filename))
+            with db.cursor() as cursor:
+                cursor.execute("UPDATE users SET photo_filename=%s WHERE id=%s", (photo_filename, user_id))
+                db.commit()
 
         return redirect(url_for('mypage'))
 
-    # GET 일 때 로그인한 사용자 정보 가져와서 user_update.html로 넘김
+    # GET 요청: 사용자 정보 불러오기
     with db.cursor() as cursor:
         cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
         user = cursor.fetchone()
 
-    return render_template('user_update.html', user=user)\
+    return render_template('user_update.html', user=user)
 
 @app.route('/delete_user', methods=['POST'])
 def delete_user():
