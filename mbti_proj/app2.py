@@ -133,7 +133,7 @@ def logout():
 def mypage():
     #로그인 안 되어 있으면 로그인 창으로 
     if 'user_id' not in session:
-        return redirect(url_for('user_login'))
+        return redirect(url_for('login'))
 
     user_id = session['user_id'] #현재 로그인 사용자 ID
     search = request.args.get('search', '') #검색창에 입력된 문자열 받기
@@ -185,7 +185,7 @@ def mypage():
 def user_update():
     #로그인 안 되어있으면 login 페이지로 
     if 'user_id' not in session:
-        return redirect(url_for('user_login'))
+        return redirect(url_for('login'))
 
     #로그인한 사용자 id user_id에 저장
     user_id = session['user_id']
@@ -238,7 +238,7 @@ def user_update():
 @user_app.route('/delete_user', methods=['POST'])
 def delete_user():
     if 'user_id' not in session:
-        return redirect(url_for('user_login'))  # 경로도 user_login으로 수정
+        return redirect(url_for('login'))  # 경로도 user_login으로 수정
 
     user_id = session['user_id']
 
