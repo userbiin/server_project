@@ -18,7 +18,11 @@ from feature_feed.feed_routes import feed_bp
 
 app = Flask(__name__)
 app.register_blueprint(friend_bp)
+
 app.register_blueprint(user_app)
+
+app.register_blueprint(user_app, url_prefix='/login')
+
 #app.register_blueprint(find)
 app.register_blueprint(mbti_feature_bp)
 app.register_blueprint(feed_bp)
@@ -29,7 +33,7 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 @app.before_request
 def simulate_login():
-    session['user_id'] = 4  # 'user2'의 id라고 가정
+    session['user_id'] = '4'  # 'user2'의 id라고 가정
 
 @app.route('/')
 def index():
