@@ -12,14 +12,14 @@ app.register_blueprint(mbti_feature_bp)
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from feature_friend.friend import friend_bp
 #from feature_user.login import user_app
-from feature_find.app import find
+#from feature_find.app import find
 from feature_feed.mbti_feature_routes import mbti_feature_bp
 from feature_feed.feed_routes import feed_bp
 
 app = Flask(__name__)
 app.register_blueprint(friend_bp)
 #app.register_blueprint(user_app)
-app.register_blueprint(find)
+#app.register_blueprint(find)
 app.register_blueprint(mbti_feature_bp)
 app.register_blueprint(feed_bp)
 
