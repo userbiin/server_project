@@ -11,15 +11,15 @@ app.register_blueprint(mbti_feature_bp)
 # 다른 리포지토리 경로 불러오기 모듈 추가 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from feature_friend.friend import friend_bp
-from feature_login.login import user_app
-from mbti_friend_lookup.app import find
+#from feature_login.login import user_app
+#from mbti_friend_lookup.app import find
 from feature_feed.mbti_feature_routes import mbti_feature_bp
 from feature_feed.feed_routes import feed_bp
 
 app = Flask(__name__)
 app.register_blueprint(friend_bp)
-app.register_blueprint(user_app)
-app.register_blueprint(find)
+#app.register_blueprint(user_app)
+#app.register_blueprint(find)
 app.register_blueprint(mbti_feature_bp)
 app.register_blueprint(feed_bp)
 
