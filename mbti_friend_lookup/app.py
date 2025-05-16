@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Blueprint, Flask, render_template, request
 import sqlite3
 
+lkup_bp = Blueprint('lkup', __name__)
 app = Flask(__name__)
 
 def get_compatible_mbti(mbti):

@@ -1,13 +1,16 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+# login 기능 
+
+from flask import Flask, Blueprint, render_template, request, redirect, url_for, session, flash
 import os
 import pymysql
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from datetime import datetime
 
+app = Blueprint('login', __name__)
 
 #Flask객체 생성
-app = Flask(__name__)
+#app = Flask(__name__)
 
 #세션 암호화용
 app.secret_key = 'your_secret_key here'
