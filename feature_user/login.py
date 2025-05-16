@@ -1,10 +1,4 @@
-<<<<<<<< HEAD:feature_user/app.py
-# login 기능 
-
-from flask import Flask, Blueprint, render_template, request, redirect, url_for, session, flash
-========
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
->>>>>>>> feature/friend:feature_user/login.py
 import os
 import pymysql
 from werkzeug.security import generate_password_hash
@@ -12,14 +6,8 @@ from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
 from datetime import datetime
 
-app = Blueprint('login', __name__)
 
-<<<<<<<< HEAD:feature_user/app.py
-#Flask객체 생성
-#app = Flask(__name__)
-========
 user_app = Blueprint('login', __name__)
->>>>>>>> feature/friend:feature_user/login.py
 
 #세션 암호화용
 user_app.secret_key = 'your_secret_key here'
