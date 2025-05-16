@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Flask, Blueprint, render_template, request
 import pymysql
 
-find = Flask(__name__)
+find = Blueprint('find', __name__)
 
 def get_connection():
     return pymysql.connect(
@@ -141,6 +141,6 @@ def user_feed(name):
         return "사용자를 찾을 수 없습니다.", 404
 
 # 서버 실행
-if __name__ == '__main__':
-    app.run(debug=True)
->>>>>>> de541e6 (web)
+#if __name__ == '__main__':
+ #   app.run(debug=True)
+
