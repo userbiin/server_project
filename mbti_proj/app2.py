@@ -151,8 +151,8 @@ def mypage():
                 FROM friends f
                 JOIN users u
                   ON (
-                      (u.id = f.receiver_id AND f.requester_id = %s)
-                      OR (u.id = f.requester_id AND f.receiver_id = %s)
+                      (u.id = f.friend_id AND f.user_id = %s)
+                      OR (u.id = f.user_id AND f.friend_id = %s)
                   )
                 WHERE f.status = 'accepted'
                   AND u.id != %s
@@ -169,8 +169,8 @@ def mypage():
                 FROM friends f
                 JOIN users u
                   ON (
-                      (u.id = f.receiver_id AND f.requester_id = %s)
-                      OR (u.id = f.requester_id AND f.receiver_id = %s)
+                      (u.id = f.friend_id AND f.user_id = %s)
+                      OR (u.id = f.user_id AND f.friend_id = %s)
                   )
                 WHERE f.status = 'accepted' AND u.id != %s
             """
@@ -244,7 +244,7 @@ def delete_user():
 
     with db.cursor() as cursor:
         # 먼저 친구 관계 전부 삭제 (요청자거나 수락자인 경우 모두)
-        cursor.execute("DELETE FROM friends WHERE requester_id = %s OR receiver_id = %s", (user_id, user_id))
+        cursor.execute("DELETE FROM friends WHERE friend_id = %s OR user_id = %s", (user_id, user_id))
         # 그 다음 사용자 삭제제
         cursor.execute("DELETE FROM users WHERE id = %s", (user_id,))
         db.commit()
