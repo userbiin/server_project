@@ -52,7 +52,7 @@
                 {% if session.get('user_id') %}
                     <a href="{{ url_for('logout') }}" class="btn btn-primary px-3 py-4 d-none d-lg-flex">Logout</a>
                 {% else %}
-                    <a href="{{ url_for('user_login') }}" class="btn btn-primary px-3 py-4 d-none d-lg-flex">Login</a>
+                    <a href="{{ url_for('login') }}" class="btn btn-primary px-3 py-4 d-none d-lg-flex">Login</a>
                 {% endif %}
             </div>
         </nav>
@@ -76,7 +76,7 @@
                     <h2 class="text-primary">Welcome!</h2>
                     <p class="mb-0">Login to continue</p>
                 </div>
-                <form method="POST" action="{{ url_for('user_login') }}">
+                <form method="POST" action="{{ url_for('login') }}">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="login_id" name="login_id" placeholder="login_id" required>
                         <label for="login_id"><i class="fa fa-user me-2"></i>ID</label>
