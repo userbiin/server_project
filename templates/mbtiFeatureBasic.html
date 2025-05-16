@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8">
+    <title>MBTI 설명 페이지</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap"
+          rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+
+    <!-- Template Stylesheet -->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            width: 80%;
+            margin: 50px auto;
+        }
+
+        .mbti-button {
+            padding: 40px;
+            font-size: 24px;
+            font-weight: bold;
+            border: none;
+            background-color: #87CEEB;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .mbti-button:hover {
+            background-color: #4682B4;
+        }
+    </style>
+</head>
+
+
+<body>
+<div class="container-xxl bg-white p-0">
+    <!-- Spinner Start -->
+    <div id="spinner"
+         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+
+    <!-- Navbar Start -->
+    <div class="container-fluid nav-bar bg-transparent">
+        <nav class="navbar navbar-expand-lg bg-white navbar-light py-0 px-4">
+            <a href="index.html" class="navbar-brand d-flex align-items-center text-center">
+                <div class="icon p-2 me-2">
+                    <img class="img-fluid" src="img/icon-deal.png" alt="Icon" style="width: 30px; height: 30px;">
+                </div>
+                <h1 class="m-0 text-primary">MAKE FRIEND!</h1>
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto">
+                    <a href="index.html" class="nav-item nav-link">Home</a>
+                    <a href="about.html" class="nav-item nav-link">About</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Property</a>
+                        <div class="dropdown-menu rounded-0 m-0">
+                            <a href="property-list.html" class="dropdown-item">Property List</a>
+                            <a href="property-type.html" class="dropdown-item">Property Type</a>
+                            <a href="property-agent.html" class="dropdown-item">Property Agent</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                        <div class="dropdown-menu rounded-0 m-0">
+                            <a href="testimonial.html" class="dropdown-item">Testimonial</a>
+                            <a href="404.html" class="dropdown-item">404 Error</a>
+                        </div>
+                    </div>
+                    <a href="contact.html" class="nav-item nav-link active">Contact</a>
+                </div>
+                <a href="" class="btn btn-primary px-3 d-none d-lg-flex">Add Property</a>
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar End -->
+
+
+    <!-- Header Start -->
+    <div class="container-fluid header bg-white p-0">
+        <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
+            <div class="col-md-6 p-5 mt-lg-5">
+                <h1 class="display-5 animated fadeIn mt-5">MBTI란?</h1>
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+
+
+    <!-- 공통 버튼 -->
+    <div style="margin-left: 50px; margin-right: 50px">
+        <pre style="text-align:center; border:2px solid #00B98E;">MBTI는 Myers-Briggs Type Indicator의 약자로, 사람의 성격 유형을 16가지로 나누는 성격 유형 검사 도구입니다.
+미국의 심리학자 마이어스와 브릭스 모녀가 칼 융(Carl Jung)의 심리 유형 이론을 바탕으로 개발했습니다.</pre>
+        <br>
+        <div style="text-align:center">
+            <p style="color:black"><span style="background-color:skyblue">외향(Extraversion, E)</span> vs <span
+                    style="background-color:palevioletred">내향(Introversion, I)</span></p>
+            <p style="color:black"><span style="background-color:lightgreen">감각(Sensing, S)</span> vs <span
+                    style="background-color:lightgoldenrodyellow">직관(Intuition, N)</span></p>
+            <p style="color:black"><span style="background-color:lightsalmon">사고(Thinking, T)</span> vs <span
+                    style="background-color:plum">감정(Feeling, F)</span></p>
+            <p style="color:black"><span style="background-color:lightsteelblue">판단(Judging, J)</span> vs <span
+                    style="background-color:khaki">인식(Perceiving, P)</span></p>
+        </div>
+
+    </div>
+    <br>
+    <hr>
+
+    <h2 style="text-align:center;">MBTI를 선택하세요</h2>
+
+    <div class="grid-container">
+        {% for mbti in ['ISTJ', 'ISFJ', 'INFJ', 'INTJ',
+                  'ISTP', 'ISFP', 'INFP', 'INTP',
+                  'ESTP', 'ESFP', 'ENFP', 'ENTP',
+                  'ESTJ', 'ESFJ', 'ENFJ', 'ENTJ'] %}
+            <form action="/mbtiFeature" method="GET">
+                <input type="hidden" name="type" value="{{ mbti }}">
+                <button type="submit" class="mbti-button">{{ mbti }}</button>
+            </form>
+        {% endfor %}
+    </div>
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="lib/wow/wow.min.js"></script>
+<script src="lib/easing/easing.min.js"></script>
+<script src="lib/waypoints/waypoints.min.js"></script>
+<script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+<!-- Template Javascript -->
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>

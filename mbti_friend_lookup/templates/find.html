@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MBTI 친구 찾기</title>
+</head>
+<body>
+    <h1>MBTI 친구 조회</h1>
+    <form method="post">
+        <label for="my_mbti">내 MBTI 입력:</label>
+        <input type="text" id="my_mbti" name="my_mbti" required>
+        <input type="submit" value="친구 찾기">
+    </form>
+
+    {% if results %}
+        <h2>{{ my_mbti }}와 궁합이 맞는 사용자들:</h2>
+        <ul>
+        {% for name, mbti in results %}
+            <li>{{ name }} ({{ mbti }})</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
