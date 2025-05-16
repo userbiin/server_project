@@ -14,7 +14,7 @@ cursor = db.cursor(dictionary=True)
 def show_friends_page():
     CURRENT_USER_ID = session.get('user_id')
     if not CURRENT_USER_ID:
-        return redirect(url_for('login'))
+        return redirect(url_for('login.login'))
 
     # 받은 친구 요청 (상대방이 보낸 pending 상태)
     cursor.execute("""
@@ -45,7 +45,7 @@ def show_friends_page():
 def accept_friend(request_id):
     CURRENT_USER_ID = session.get('user_id')
     if not CURRENT_USER_ID:
-        return redirect(url_for('login'))
+        return redirect(url_for('login.login'))
 
     # 요청 수락 (상태 변경)
     cursor.execute("""
@@ -141,7 +141,7 @@ def search_user():
 def request_friend():
     CURRENT_USER_ID = session.get('user_id')
     if not CURRENT_USER_ID:
-        return redirect(url_for('login'))
+        return redirect(url_for('login.login'))
 
     friend_id = request.form['friend_id']
 

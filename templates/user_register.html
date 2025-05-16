@@ -40,11 +40,11 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto">
-                    <a href="/home" class="nav-item nav-link">HOME</a>
+                    <a href="{{ url_for('login.home') }}" class="nav-item nav-link">HOME</a>
                     <a href="{{ url_for('login.mypage') }}" class="nav-item nav-link active">MYPAGE</a>
-                    <a href="/mbtiFeatureBasic" class="nav-item nav-link">MBTI</a>
+                    <a href="/mbtiFeature" class="nav-item nav-link">MBTI</a>
                     <a href="/myFeed" class="nav-item nav-link">FEED</a>
-                    <a href="/friendpage" class="nav-item nav-link">FRIEND</a>
+                    <a href="/friends" class="nav-item nav-link">FRIEND</a>
                 </div>
 
                 <!-- 로그인 여부에 따라 버튼 변경 -->

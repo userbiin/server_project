@@ -26,7 +26,7 @@ for mbti in mbtiDetailList:
 def mbti_feature():
     CURRENT_USER_ID = session.get('user_id')
     if not CURRENT_USER_ID:
-        return redirect(url_for('login'))
+        return redirect(url_for('login.login'))
     if (request.method == 'GET'):
         mbti = request.args.get("type")
         if mbti:
