@@ -8,15 +8,15 @@ from datetime import datetime
 
 
 #Flask객체 생성
-app = Flask(__name__)
+user_app = Flask(__name__)
 
 #세션 암호화용
-app.secret_key = 'your_secret_key here'
+user_app.secret_key = 'your_secret_key here'
 
 #업로드 폴더 설정
 UPLOAD_FOLDER = 'static/uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+user_app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 ALLOWED_EXTENSIONS = {'png','jpg', 'jpeg', 'gif'}
 
 def allowed_file(filename):
@@ -54,13 +54,13 @@ def create_users_table():
 
 create_users_table()
 
-@app.route('/')
-@app.route('/home')
+@user_app.route('/')
+@user_app.route('/home')
 def home():
     return render_template('home.html') 
 
 #회원가입은 GET은 홈페이지 보여주고 POST는 제출 데이터 처리
-@app.route('/user_register', methods=['GET', 'POST'])
+@user_app.route('/user_register', methods=['GET', 'POST'])
 def user_register():
     if request.method == 'POST' :
         login_id = request.form['login_id']
@@ -80,7 +80,7 @@ def user_register():
         photo_filename = ''
         if photo and photo.filename != '':
             photo_filename = photo.filename
-            photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photo_filename))
+            photo.save(os.path.join(user_app.config['UPLOAD_FOLDER'], photo_filename))
 
         #insert query
         with db.cursor() as cursor:
@@ -100,7 +100,7 @@ def user_register():
 
     return render_template('user_register.html')
 
-@app.route('/user_login', methods = ['GET', 'POST'])
+@user_app.route('/user_login', methods = ['GET', 'POST'])
 def user_login():
     if request.method == 'POST':
         login_id = request.form['login_id']
@@ -124,12 +124,12 @@ def user_login():
 
     return render_template('user_login.html') 
 
-@app.route('/logout')
+@user_app.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('home'))
 
-@app.route('/mypage')
+@user_app.route('/mypage')
 def mypage():
     #로그인 안 되어 있으면 로그인 창으로 
     if 'user_id' not in session:
@@ -181,7 +181,7 @@ def mypage():
 
     return render_template('mypage.html', user=user, friends=friends, friend_count=friend_count)
 
-@app.route('/user_update', methods=['GET', 'POST'])
+@user_app.route('/user_update', methods=['GET', 'POST'])
 def user_update():
     #로그인 안 되어있으면 login 페이지로 
     if 'user_id' not in session:
@@ -221,7 +221,7 @@ def user_update():
         # 프로필 사진 수정 (파일이 선택된 경우에만)
         if photo and photo.filename:
             photo_filename = secure_filename(photo.filename)
-            photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photo_filename))
+            photo.save(os.path.join(user_app.config['UPLOAD_FOLDER'], photo_filename))
             with db.cursor() as cursor:
                 cursor.execute("UPDATE users SET photo_filename=%s WHERE id=%s", (photo_filename, user_id))
                 db.commit()
@@ -235,7 +235,7 @@ def user_update():
 
     return render_template('user_update.html', user=user)
 
-@app.route('/delete_user', methods=['POST'])
+@user_app.route('/delete_user', methods=['POST'])
 def delete_user():
     if 'user_id' not in session:
         return redirect(url_for('user_login'))  # 경로도 user_login으로 수정
@@ -254,4 +254,4 @@ def delete_user():
 
 
 if __name__ == '__main__':
-    app.run(debug = True, host="0.0.0.0", port=5000)
+    user_app.run(debug = True, host="0.0.0.0", port=5000)
