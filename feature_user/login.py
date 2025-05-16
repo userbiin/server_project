@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash, current_app
 import os
 import pymysql
 from werkzeug.security import generate_password_hash
@@ -9,13 +9,11 @@ from datetime import datetime
 
 user_app = Blueprint('login', __name__)
 
-#세션 암호화용
-user_app.secret_key = 'your_secret_key here'
+
 
 #업로드 폴더 설정
 UPLOAD_FOLDER = 'static/uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-user_app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 ALLOWED_EXTENSIONS = {'png','jpg', 'jpeg', 'gif'}
 
 def allowed_file(filename):
@@ -79,7 +77,7 @@ def user_register():
         photo_filename = ''
         if photo and photo.filename != '':
             photo_filename = photo.filename
-            photo.save(os.path.join(user_app.config['UPLOAD_FOLDER'], photo_filename))
+            photo.save(os.path.join(current_app.config['UPLOAD_FOLDER'], photo_filename))
 
         #insert query
         with db.cursor() as cursor:
@@ -99,8 +97,8 @@ def user_register():
 
     return render_template('user_register.html')
 
-@user_app.route('/user_login', methods = ['GET', 'POST'])
-def user_login():
+@user_app.route('/login', methods = ['GET', 'POST'])
+def login():
     if request.method == 'POST':
         login_id = request.form['login_id']
         password = request.form['password']
@@ -119,7 +117,7 @@ def user_login():
             #로그인 실패
             #flash 메세지 
             flash("ID 또는 비밀번호가 틀렸습니다.")
-            return redirect(url_for('user_login'))
+            return redirect(url_for('login'))
 
     return render_template('user_login.html') 
 
@@ -132,7 +130,7 @@ def logout():
 def mypage():
     #로그인 안 되어 있으면 로그인 창으로 
     if 'user_id' not in session:
-        return redirect(url_for('user_login'))
+        return redirect(url_for('login'))
 
     user_id = session['user_id'] #현재 로그인 사용자 ID
     search = request.args.get('search', '') #검색창에 입력된 문자열 받기
@@ -150,8 +148,8 @@ def mypage():
                 FROM friends f
                 JOIN users u
                   ON (
-                      (u.id = f.receiver_id AND f.requester_id = %s)
-                      OR (u.id = f.requester_id AND f.receiver_id = %s)
+                      (u.id = f.friend_id AND f.user_id = %s)
+                      OR (u.id = f.user_id AND f.friend_id = %s)
                   )
                 WHERE f.status = 'accepted'
                   AND u.id != %s
@@ -168,8 +166,8 @@ def mypage():
                 FROM friends f
                 JOIN users u
                   ON (
-                      (u.id = f.receiver_id AND f.requester_id = %s)
-                      OR (u.id = f.requester_id AND f.receiver_id = %s)
+                      (u.id = f.friend_id AND f.user_id = %s)
+                      OR (u.id = f.user_id AND f.friend_id = %s)
                   )
                 WHERE f.status = 'accepted' AND u.id != %s
             """
@@ -184,7 +182,7 @@ def mypage():
 def user_update():
     #로그인 안 되어있으면 login 페이지로 
     if 'user_id' not in session:
-        return redirect(url_for('user_login'))
+        return redirect(url_for('login'))
 
     #로그인한 사용자 id user_id에 저장
     user_id = session['user_id']
@@ -220,7 +218,7 @@ def user_update():
         # 프로필 사진 수정 (파일이 선택된 경우에만)
         if photo and photo.filename:
             photo_filename = secure_filename(photo.filename)
-            photo.save(os.path.join(user_app.config['UPLOAD_FOLDER'], photo_filename))
+            photo.save(os.path.join(current_app.config['UPLOAD_FOLDER'], photo_filename))
             with db.cursor() as cursor:
                 cursor.execute("UPDATE users SET photo_filename=%s WHERE id=%s", (photo_filename, user_id))
                 db.commit()
@@ -237,13 +235,13 @@ def user_update():
 @user_app.route('/delete_user', methods=['POST'])
 def delete_user():
     if 'user_id' not in session:
-        return redirect(url_for('user_login'))  # 경로도 user_login으로 수정
+        return redirect(url_for('login'))  # 경로도 user_login으로 수정
 
     user_id = session['user_id']
 
     with db.cursor() as cursor:
         # 먼저 친구 관계 전부 삭제 (요청자거나 수락자인 경우 모두)
-        cursor.execute("DELETE FROM friends WHERE requester_id = %s OR receiver_id = %s", (user_id, user_id))
+        cursor.execute("DELETE FROM friends WHERE user_id = %s OR friend_id = %s", (user_id, user_id))
         # 그 다음 사용자 삭제제
         cursor.execute("DELETE FROM users WHERE id = %s", (user_id,))
         db.commit()
@@ -252,5 +250,3 @@ def delete_user():
     return redirect(url_for('home'))
 
 
-if __name__ == '__main__':
-    user_app.run(debug = True, host="0.0.0.0", port=5000)

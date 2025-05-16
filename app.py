@@ -25,6 +25,7 @@ app.register_blueprint(feed_bp)
 
 # 테스트용
 app.secret_key = 'any-random-string'  # 세션 사용을 위한 키 임시부여
+app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 @app.before_request
 def simulate_login():
