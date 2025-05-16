@@ -1,69 +1,38 @@
-from flask import Flask, render_template, request
-import pymysql
+from flask import Flask, render_template, session
+import sys, os
+from feature_feed.feed_routes import feed_bp
+from feature_feed.mbti_feature_routes import mbti_feature_bp
 
-find = Flask(__name__)
+app = Flask(__name__)
+app.register_blueprint(feed_bp)
+app.register_blueprint(mbti_feature_bp)
 
-def get_connection():
-    return pymysql.connect(
-        host='localhost',
-        user='root',
-        password='1234',
-        database='mbti_app',
-        charset='utf8mb4',
-        cursorclass=pymysql.cursors.Cursor
-    )
 
-def get_compatible_mbti(mbti):
-    compatibility = {
-        'ENTJ': ['ISFP', 'INFP', 'ESFP', 'ESTP', 'ISTP', 'INTP'],
-        'ENTP': ['ISFJ', 'ISTJ', 'ENTP', 'ESTJ', 'ESFJ', 'INFJ'],
-        'INTJ': ['ESFP', 'ESTP', 'ISFP', 'INFP', 'INFJ', 'ENFP'],
-        'INTP': ['ESFJ', 'ENFJ', 'ISFJ', 'INFJ', 'ESTJ', 'ISTJ'],
-        'ESTJ': ['INFP', 'ISFP', 'INTP', 'ENTP', 'ISTP', 'ESFP'],
-        'ESFJ': ['INTP', 'ISTP', 'ENTP', 'ENFP', 'INFP', 'ISTJ'],
-        'ISTJ': ['ENFP', 'ENTP', 'ISFP', 'INFP', 'ESTP', 'ESFP'],
-        'ISFJ': ['ENTP', 'ENFP', 'INTP', 'ISTP', 'ESFP', 'ESTP'],
-        'ENFJ': ['ISTP', 'INTP', 'ESTP', 'ESFP', 'ENFJ', 'INFP'],
-        'ENFP': ['ISTJ', 'ISFJ', 'ESFJ', 'ESTJ', 'INFJ', 'INTJ'],
-        'INFJ': ['ESTP', 'ESFP', 'ISTP', 'INTP', 'ENFP', 'ENTP'],
-        'INFP': ['ESTJ', 'ENTJ', 'INTJ', 'ISTJ', 'ENFJ', 'ESFJ'],
-        'ESTP': ['INFJ', 'INTJ', 'ENFJ', 'ENTJ', 'ISFJ', 'ISTP'],
-        'ESFP': ['INTJ', 'INFJ', 'ENTJ', 'ENFJ', 'ESTJ', 'ISTJ'],
-        'ISTP': ['ENFJ', 'ESFJ', 'INFJ', 'ISFJ', 'ENTJ', 'ESTJ'],
-        'ISFP': ['ENTJ', 'ESTJ', 'INTJ', 'ISTJ', 'ENFJ', 'ESFJ'],
-    }
-    return compatibility.get(mbti.upper(), [])
+# 다른 리포지토리 경로 불러오기 모듈 추가 
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+from feature_friend.friend import friend_bp
+from feature_user.login import user_app
+#from mbti_friend_lookup.app import find
+from feature_feed.mbti_feature_routes import mbti_feature_bp
+from feature_feed.feed_routes import feed_bp
 
-@find.route('/', methods=['GET', 'POST'])
+app = Flask(__name__)
+app.register_blueprint(friend_bp)
+app.register_blueprint(user_app)
+#app.register_blueprint(find)
+app.register_blueprint(mbti_feature_bp)
+app.register_blueprint(feed_bp)
+
+# 테스트용
+app.secret_key = 'any-random-string'  # 세션 사용을 위한 키 임시부여
+
+@app.before_request
+def simulate_login():
+    session['user_id'] = 4  # 'user2'의 id라고 가정
+
+@app.route('/')
 def index():
-    my_mbti = ''
-    compatible = []
-    if request.method == 'POST':
-        my_mbti = request.form['my_mbti']
-        compatible = get_compatible_mbti(my_mbti)
-    return render_template('index.html', my_mbti=my_mbti, compatible=compatible)
-
-@find.route('/results')
-def results():
-    mbti = request.args.get('mbti')
-    conn = get_connection()
-    with conn.cursor() as cur:
-        cur.execute("SELECT name, mbti FROM users WHERE mbti = %s", (mbti,))
-        results = cur.fetchall()
-    conn.close()
-    return render_template('results.html', mbti=mbti, results=results)
-
-@find.route('/user/<name>')
-def user_feed(name):
-    conn = get_connection()
-    with conn.cursor() as cur:
-        cur.execute("SELECT name, mbti, introduction FROM users WHERE name = %s", (name,))
-        user = cur.fetchone()
-    conn.close()
-    if user:
-        return render_template('user_feed.html', user=user)
-    else:
-        return "사용자를 찾을 수 없습니다.", 404
+    return render_template('index.html')
 
 if __name__ == '__main__':
-    find.run(debug=True)
+    app.run(debug=True)

@@ -59,8 +59,8 @@
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Search</a>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a href="property-list.html" class="dropdown-item">Property List</a>
-                                <a href="property-type.html" class="dropdown-item">Property Type</a>
+                                <a href="{{ url_for('mbti_feature.mbti_feature') }}" class="dropdown-item">MBTI feautre</a>
+                                <a href="{{ url_for('friend.show_friends_page')}}" class="dropdown-item">Search Friend</a>
                                 <a href="property-agent.html" class="dropdown-item">Property Agent</a>
                             </div>
                         </div>
@@ -73,7 +73,7 @@
                         </div>
                         <a href="contact.html" class="nav-item nav-link">Contact</a>
                     </div>
-                    <a href="" class="btn btn-primary px-3 d-none d-lg-flex">Login</a>
+                    <a href="{{ url_for('login.user_login')}}" class="btn btn-primary px-3 d-none d-lg-flex">Login</a>
                 </div>
             </nav>
         </div>
