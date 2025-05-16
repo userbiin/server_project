@@ -100,8 +100,8 @@ def user_register():
 
     return render_template('user_register.html')
 
-@user_app.route('/user_login', methods = ['GET', 'POST'])
-def user_login():
+@user_app.route('/login', methods = ['GET', 'POST'])
+def login():
     if request.method == 'POST':
         login_id = request.form['login_id']
         password = request.form['password']
@@ -120,7 +120,7 @@ def user_login():
             #로그인 실패
             #flash 메세지 
             flash("ID 또는 비밀번호가 틀렸습니다.")
-            return redirect(url_for('user_login'))
+            return redirect(url_for('login'))
 
     return render_template('user_login.html') 
 
