@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>나의 피드</title>
+    <title>MBTI 설명 페이지</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -31,6 +31,32 @@
 
     <!-- Template Stylesheet -->
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            width: 80%;
+            margin: 50px auto;
+        }
+
+        .mbti-button {
+            padding: 40px;
+            font-size: 24px;
+            font-weight: bold;
+            border: none;
+            background-color: #87CEEB;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .mbti-button:hover {
+            background-color: #4682B4;
+        }
+    </style>
 </head>
 
 
@@ -90,77 +116,45 @@
     <div class="container-fluid header bg-white p-0">
         <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
             <div class="col-md-6 p-5 mt-lg-5">
-                <h1 class="display-5 animated fadeIn mt-5">내 피드에 글 작성</h1>
+                <h1 class="display-5 animated fadeIn mt-5">MBTI란?</h1>
             </div>
         </div>
     </div>
     <!-- Header End -->
 
-    <!-- 공통 버튼 -->
-    <div style="margin-left: 50px">
-        <button style="background-color: #00B98E; color:white; border:none" onclick="location.href='/myFeed'">내 피드
-        </button>
-        <button style="background-color: #00B98E; color:white; border:none" onclick="location.href='/feedSearch'">친구
-            피드
-        </button>
-        <br>
-        <br>
-        <!-- 댓글 입력창 -->
-        <div class="comment-box">
-            <h2>피드를 올립시다.</h2>
-            <form action="/myFeed" method="post" enctype="multipart/form-data" onsubmit="return isTextareaFill()">
-                <textarea id="upload_comment" name="upload_comment" placeholder="피드에 작성할 글 입력" required></textarea>
-                <br>
-                <input type="hidden" name="action" value="upload">
-                <input type="file" name="upload_file" accept="image/*">
-                <input type="submit" value="upload">
-            </form>
 
-            <script>
-                function isTextareaFill() {
-                    const comment = document.getElementById('upload_comment').value.trim(); //trim은 공백제거
-                    if (comment === "") { //===는 값과 타입 모두 검사
-                        return false;
-                    } else {
-                        alert("피드 등록 완료!");
-                        return true;
-                    }
-                }
-            </script>
+    <!-- 공통 버튼 -->
+    <div style="margin-left: 50px; margin-right: 50px">
+        <pre style="text-align:center; border:2px solid #00B98E;">MBTI는 Myers-Briggs Type Indicator의 약자로, 사람의 성격 유형을 16가지로 나누는 성격 유형 검사 도구입니다.
+미국의 심리학자 마이어스와 브릭스 모녀가 칼 융(Carl Jung)의 심리 유형 이론을 바탕으로 개발했습니다.</pre>
+        <br>
+        <div style="text-align:center">
+            <p style="color:black"><span style="background-color:skyblue">외향(Extraversion, E)</span> vs <span
+                    style="background-color:palevioletred">내향(Introversion, I)</span></p>
+            <p style="color:black"><span style="background-color:lightgreen">감각(Sensing, S)</span> vs <span
+                    style="background-color:lightgoldenrodyellow">직관(Intuition, N)</span></p>
+            <p style="color:black"><span style="background-color:lightsalmon">사고(Thinking, T)</span> vs <span
+                    style="background-color:plum">감정(Feeling, F)</span></p>
+            <p style="color:black"><span style="background-color:lightsteelblue">판단(Judging, J)</span> vs <span
+                    style="background-color:khaki">인식(Perceiving, P)</span></p>
         </div>
 
-        <br>
-        <br>
+    </div>
+    <br>
+    <hr>
 
-        <table style="text-align: center; border: 1px solid #00B98E;">
-            <tr>
-                <th style="padding:5px; border: 1px solid #00B98E;">글 순서</th>
-                <th style="padding:5px; border: 1px solid #00B98E;">업로드 날짜</th>
-                <th style="padding:5px; border: 1px solid #00B98E;">내용</th>
-                <th style="padding:5px; border: 1px solid #00B98E;"></th> <!--삭제 버튼 공간-->
-            </tr>
-            {% for i in range(table|length) %}
-                <tr>
-                    <td style="padding:5px; border: 1px solid #00B98E;">{{ table|length - i }}</td>
-                    <td style="padding:5px; border: 1px solid #00B98E;">{{ table[table|length - i-1][4] }}</td>
-                    <!-- 업로드 날짜 -->
-                    <td style="padding:5px; border: 1px solid #00B98E;">
-                        {% if table[table|length - i-1][3] %}
-                            <img src="{{ url_for('static', filename=table[table|length - i-1][3].split('static/')[-1]) }}"
-                                 width="100">
-                        {% endif %}
-                        <p>{{ table[table|length - i-1][2] }}</p>
-                    </td>
-                    <td style="padding:5px; border: 1px solid #00B98E;">
-                        <form action="/myFeed" method="post">
-                            <input type="hidden" name="action" value="delete">
-                            <input type="hidden" name="delete_id" value="{{ table[table|length - i-1][0] }}">
-                            <input type="submit" value="delete" onClick="alert('해당 게시글이 삭제됨.')">
-                        </form>
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
+    <h2 style="text-align:center;">MBTI를 선택하세요</h2>
+
+    <div class="grid-container">
+        {% for mbti in ['ISTJ', 'ISFJ', 'INFJ', 'INTJ',
+                  'ISTP', 'ISFP', 'INFP', 'INTP',
+                  'ESTP', 'ESFP', 'ENFP', 'ENTP',
+                  'ESTJ', 'ESFJ', 'ENFJ', 'ENTJ'] %}
+            <form action="/mbtiFeature" method="GET">
+                <input type="hidden" name="type" value="{{ mbti }}">
+                <button type="submit" class="mbti-button">{{ mbti }}</button>
+            </form>
+        {% endfor %}
     </div>
 
     <!-- Back to Top -->
