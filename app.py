@@ -28,9 +28,9 @@ app.register_blueprint(feed_bp)
 app.secret_key = 'any-random-string'  # 세션 사용을 위한 키 임시부여
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
-@app.before_request
-def simulate_login():
-    session['user_id'] = '4'  # 'user2'의 id라고 가정
+#@app.before_request
+#def simulate_login():
+#    session['user_id'] = '4'  # 'user2'의 id라고 가정
 
 @app.route('/')
 def index():
