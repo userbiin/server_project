@@ -54,7 +54,7 @@ create_users_table()
 @user_app.route('/')
 @user_app.route('/home')
 def home():
-    return render_template('home.html') 
+    return render_template('index.html') 
 
 #회원가입은 GET은 홈페이지 보여주고 POST는 제출 데이터 처리
 @user_app.route('/user_register', methods=['GET', 'POST'])
@@ -93,7 +93,7 @@ def user_register():
 
         db.commit()
 
-        return redirect(url_for('home'))
+        return redirect(url_for('login.login'))
 
     return render_template('user_register.html')
 
@@ -112,25 +112,25 @@ def login():
             session['user_id'] = user['id']
             session['login_id'] = user['login_id']
             session['name'] = user['name']
-            return redirect(url_for('home'))
+            return redirect(url_for('login.home'))
         else:
             #로그인 실패
             #flash 메세지 
             flash("ID 또는 비밀번호가 틀렸습니다.")
-            return redirect(url_for('login'))
+            return redirect(url_for('login.login'))
 
     return render_template('user_login.html') 
 
 @user_app.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('home'))
+    return redirect(url_for('login.home'))
 
 @user_app.route('/mypage')
 def mypage():
     #로그인 안 되어 있으면 로그인 창으로 
     if 'user_id' not in session:
-        return redirect(url_for('login'))
+        return redirect(url_for('login.login'))
 
     user_id = session['user_id'] #현재 로그인 사용자 ID
     search = request.args.get('search', '') #검색창에 입력된 문자열 받기
@@ -182,7 +182,7 @@ def mypage():
 def user_update():
     #로그인 안 되어있으면 login 페이지로 
     if 'user_id' not in session:
-        return redirect(url_for('login'))
+        return redirect(url_for('login.login'))
 
     #로그인한 사용자 id user_id에 저장
     user_id = session['user_id']
@@ -223,7 +223,7 @@ def user_update():
                 cursor.execute("UPDATE users SET photo_filename=%s WHERE id=%s", (photo_filename, user_id))
                 db.commit()
 
-        return redirect(url_for('mypage'))
+        return redirect(url_for('login.mypage'))
 
     # GET 요청: 사용자 정보 불러오기
     with db.cursor() as cursor:
@@ -235,7 +235,7 @@ def user_update():
 @user_app.route('/delete_user', methods=['POST'])
 def delete_user():
     if 'user_id' not in session:
-        return redirect(url_for('login'))  # 경로도 user_login으로 수정
+        return redirect(url_for('login.login'))  # 경로도 user_login으로 수정
 
     user_id = session['user_id']
 
@@ -247,7 +247,7 @@ def delete_user():
         db.commit()
 
     session.clear()
-    return redirect(url_for('home'))
+    return redirect(url_for('login.home'))
 
 
 if __name__ == '__main__':

@@ -10,11 +10,11 @@
         <p>환영합니다, <strong>{{ session.name }}</strong>님!</p>
         <ul>
             <li><a href="/friend">친구 관리</a></li>
-            <li><a href="/mypage">마이페이지</a></li>
+            <li><a href="{{ url_for('login.mypage') }}">마이페이지</a></li>
             <li><a href="/logout">로그아웃</a></li>
         </ul>
     {% else %}
-        <p><a href="{{ url_for('login') }}">로그인</a> 또는 <a href="{{ url_for('user_register') }}">회원가입</a> 해주세요.</p>
+        <p><a href="{{ url_for('login.login') }}">로그인</a> 또는 <a href="{{ url_for('login.user_register') }}">회원가입</a> 해주세요.</p>
     {% endif %}
     <h2>메뉴</h2>
     <ul>

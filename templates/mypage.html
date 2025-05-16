@@ -39,16 +39,16 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto">
                     <a href="/home" class="nav-item nav-link">HOME</a>
-                    <a href="/mypage" class="nav-item nav-link active">MYPAGE</a>
+                    <a href="{{ url_for('login.mypage') }}" class="nav-item nav-link active">MYPAGE</a>
                     <a href="/mbtiFeature" class="nav-item nav-link">MBTI</a>
                     <a href="/myFeed" class="nav-item nav-link">FEED</a>
                     <a href="/search_user" class="nav-item nav-link">FRIEND</a>
                 </div>
                 <!-- 로그인 여부에 따라 버튼 변경 -->
                 {% if session.get('user_id') %}
-                    <a href="{{ url_for('logout') }}" class="btn btn-primary px-3 py-4 d-none d-lg-flex">Logout</a>
+                    <a href="{{ url_for('login.logout') }}" class="btn btn-primary px-3 py-4 d-none d-lg-flex">Logout</a>
                 {% else %}
-                    <a href="{{ url_for('login') }}" class="btn btn-primary px-3 py-4 d-none d-lg-flex">Login</a>
+                    <a href="{{ url_for('login.login') }}" class="btn btn-primary px-3 py-4 d-none d-lg-flex">Login</a>
                 {% endif %}
             </div>
         </nav>
@@ -75,16 +75,16 @@
             </ul>
 
             <div class="d-flex justify-content-start align-items-center gap-3 mb-4">
-                <a href="{{ url_for('user_update') }}" class="btn btn-outline-primary">정보 수정</a>
+                <a href="{{ url_for('login.user_update') }}" class="btn btn-outline-primary">정보 수정</a>
 
-                <form action="{{ url_for('delete_user') }}" method="POST" onsubmit="return confirm('정말로 회원 탈퇴하시겠습니까?.');">
+                <form action="{{ url_for('login.delete_user') }}" method="POST" onsubmit="return confirm('정말로 회원 탈퇴하시겠습니까?.');">
                     <button type="submit" class="btn btn-outline-danger">회원 탈퇴</button>
                 </form>
             </div>
         
             <hr>
             <h4>친구 목록 (총 {{ friend_count }}명)</h4>
-            <form method="GET" action="{{ url_for('mypage') }}" class="mb-3">
+            <form method="GET" action="{{ url_for('login.mypage') }}" class="mb-3">
                 <input type="text" name="search" class="form-control" placeholder="이름, ID, MBTI 검색" value="{{ request.args.get('search', '') }}">
             </form>
 
