@@ -47,7 +47,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto">
-                        <a href="{{ url_for('Sindex') }}" class="nav-item nav-link active">Home</a>
+                        <a href="{{ url_for('index') }}" class="nav-item nav-link active">Home</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Search</a>
                             <div class="dropdown-menu rounded-0 m-0">
@@ -60,11 +60,10 @@
                         {% if session.get('user_id') %}
                             <a href="{{ url_for('feed.feed') }}" class="nav-item nav-link">My Feed</a>
                         {% endif %}
-
+                        <a href="{{ url_for('feed.feed_search') }}" class="nav-item nav-link">Feed</a>
                         {% if session.get('user_id') %}
-                            <a href="{{ url_for('login.mypage') }}" class="nav-item nav-link active">MYPAGE</a>
+                            <a href="{{ url_for('login.mypage') }}" class="nav-item nav-link">MYPAGE</a>
                         {% endif %}
-                        <a href="contact.html" class="nav-item nav-link">Feed</a>
                     </div>
 
                     <!-- 로그인 여부에 따라 버튼 변경 -->

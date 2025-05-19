@@ -1,10 +1,11 @@
-from flask import Flask, render_template, session
+from flask import Flask, render_template, Blueprint
 import sys, os
 from feature_user.login import user_app
 from feature_feed.feed_routes import feed_bp
 from feature_feed.mbti_feature_routes import mbti_feature_bp
 from feature_find.find_routes import find_bp
 from feature_friend.friend import friend_bp
+
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 

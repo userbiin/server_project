@@ -148,9 +148,9 @@ def mypage():
                 FROM friends f
                 JOIN users u
                   ON (
-                      (u.id = f.friend_id AND f.user_id = %s)
-                      OR (u.id = f.user_id AND f.friend_id = %s)
-                  )
+                      (u.id = f.friend_id AND f.login_id = %s)
+                      OR (u.id = f.login_id AND f.friend_id = %s)
+                )
                 WHERE f.status = 'accepted'
                   AND u.id != %s
                   AND (
