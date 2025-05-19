@@ -65,8 +65,12 @@
                             </div>
                         </div>
                         {% if session.get('user_id') %}
-                                    <a href="{{ url_for('feed.feed') }}" class="nav-item nav-link">My Feed</a>
-                                {% endif %}
+                            <a href="{{ url_for('feed.feed') }}" class="nav-item nav-link">My Feed</a>
+                        {% endif %}
+
+                        {% if session.get('user_id') %}
+                            <a href="{{ url_for('login.mypage') }}" class="nav-item nav-link active">MYPAGE</a>
+                        {% endif %}
                         <a href="contact.html" class="nav-item nav-link">Feed</a>
                     </div>
                     
