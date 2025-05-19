@@ -103,7 +103,7 @@
 
             <ul class="list-group">
                 {% for friend in friends %}
-                    <li class="list-group-item">{{ friend.name }} (ID: {{ friend.user_id }}, MBTI: {{ friend.mbti }})</li>
+                    <li class="list-group-item">{{ friend.name }} (MBTI: {{ friend.mbti }})</li>
                 {% else %}
                     <li class="list-group-item">친구가 없습니다.</li>
                 {% endfor %}
