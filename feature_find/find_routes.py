@@ -1,15 +1,16 @@
-from flask import Flask, render_template, request
+# feature_find/find_routes.py
+from flask import Blueprint, render_template, request
 import pymysql
 
-find = Flask(__name__)  
+find_bp = Blueprint('find', __name__)
 
 # MySQL 연결 함수
 def get_connection():
     return pymysql.connect(
         host='localhost',
-        user='root',
+        user='flaskuser',
         password='1234',
-        database='mbti_app',
+        database='mbti_db',
         charset='utf8mb4',
         cursorclass=pymysql.cursors.Cursor
     )
@@ -35,16 +36,16 @@ def get_compatible_mbti(mbti):
     }
     return compatibility.get(mbti.upper(), [])
 
-@find.route('/', methods=['GET', 'POST'])
-def index():
+@find_bp.route('/find', methods=['GET', 'POST'])
+def user_find():
     my_mbti = ''
     compatible = []
     if request.method == 'POST':
         my_mbti = request.form['my_mbti']
         compatible = get_compatible_mbti(my_mbti)
-    return render_template('index.html', my_mbti=my_mbti, compatible=compatible)
+    return render_template('search.html', my_mbti=my_mbti, compatible=compatible)
 
-@find.route('/results')
+@find_bp.route('/results')
 def results():
     mbti = request.args.get('mbti')
     conn = get_connection()
@@ -52,9 +53,9 @@ def results():
         cur.execute("SELECT name, mbti FROM users WHERE mbti = %s", (mbti,))
         results = cur.fetchall()
     conn.close()
-    return render_template('results.html', mbti=mbti, results=results)
+    return render_template('searchresults.html', mbti=mbti, results=results)
 
-@find.route('/user/<name>')
+@find_bp.route('/user/<name>')
 def user_feed(name):
     conn = get_connection()
     with conn.cursor() as cur:
@@ -65,6 +66,3 @@ def user_feed(name):
         return render_template('user_feed.html', user=user)
     else:
         return "사용자를 찾을 수 없습니다.", 404
-
-if __name__ == '__main__':
-    find.run(debug=True) 
