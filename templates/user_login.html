@@ -5,12 +5,13 @@
     <meta charset="utf-8">
     <title>Login</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    
+
     <!-- Favicon -->
     <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="icon">
 
     <!-- Google Web Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap"
+          rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -28,97 +29,102 @@
 </head>
 
 <body>
-    <!-- Navbar Start -->
-    <div class="container-fluid nav-bar bg-transparent">
-        <nav class="navbar navbar-expand-lg bg-white navbar-light py-0 px-4">
-            <a href="index.html" class="navbar-brand d-flex align-items-center text-center">
-                <div class="icon p-2 me-2">
-                    <img class="img-fluid" src="{{ url_for('static', filename='img/icon-deal.png') }}" alt="Icon" style="width: 30px; height: 30px;">
-                </div>
-                <h1 class="m-0 text-primary">MAKE FRIEND!</h1>
-            </a>
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav ms-auto">
-                    <a href="index.html" class="nav-item nav-link active">Home</a>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Search</a>
-                        <div class="dropdown-menu rounded-0 m-0">
-                            <a href="{{ url_for('mbti_feature.mbti_feature') }}" class="dropdown-item">MBTI feautre</a>
-                            <a href="{{ url_for('friend.show_friends_page')}}" class="dropdown-item">Search Friend</a>
-                            <a href="{{ url_for('find.user_find')}}" class="dropdown-item">Search User</a>
-                        </div>
-                    </div>
-                    {% if session.get('user_id') %}
-                        <a href="{{ url_for('feed.feed') }}" class="nav-item nav-link">My Feed</a>
-                    {% endif %}
+<!-- Navbar Start -->
+<div class="container-fluid nav-bar bg-transparent">
+    <nav class="navbar navbar-expand-lg bg-white navbar-light py-0 px-4">
+        <a href="{{ url_for('index') }}" class="navbar-brand d-flex align-items-center text-center">
+            <div class="icon p-2 me-2">
+                <img class="img-fluid" src="{{ url_for('static', filename='img/icon-deal.png') }}" alt="Icon"
+                     style="width: 30px; height: 30px;">
+            </div>
+            <h1 class="m-0 text-primary">MAKE FRIEND!</h1>
+        </a>
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto">
+                <a href="{{ url_for('index') }}" class="nav-item nav-link active">Home</a>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Search</a>
+                    <div class="dropdown-menu rounded-0 m-0">
+                        <a href="{{ url_for('mbti_feature.mbti_feature') }}" class="dropdown-item">MBTI feautre</a>
+                        <a href="{{ url_for('friend.show_friends_page') }}" class="dropdown-item">Search Friend</a>
+                        <a href="{{ url_for('find.user_find') }}" class="dropdown-item">Search User</a>
 
-                    {% if session.get('user_id') %}
-                        <a href="{{ url_for('login.mypage') }}" class="nav-item nav-link">MYPAGE</a>
-                    {% endif %}
-                    <a href="contact.html" class="nav-item nav-link">Feed</a>
+                    </div>
                 </div>
-                    
-                <!-- 로그인 여부에 따라 버튼 변경 -->
                 {% if session.get('user_id') %}
-                    <a href="{{ url_for('login.logout') }}" class="btn btn-primary px-3 d-none d-lg-flex">Logout</a>
-                {% else %}
-                    <a href="{{ url_for('login.login') }}" class="btn btn-primary px-3 d-none d-lg-flex">Login</a>
+                    <a href="{{ url_for('feed.feed') }}" class="nav-item nav-link">My Feed</a>
+                {% endif %}
+                <a href="{{ url_for('feed.feed_search') }}" class="nav-item nav-link">Feed</a>
+                {% if session.get('user_id') %}
+                    <a href="{{ url_for('login.mypage') }}" class="nav-item nav-link">MYPAGE</a>
                 {% endif %}
             </div>
-        </nav>
+
+            <!-- 로그인 여부에 따라 버튼 변경 -->
+            {% if session.get('user_id') %}
+                <a href="{{ url_for('login.logout') }}" class="btn btn-primary px-3 d-none d-lg-flex">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login.login') }}" class="btn btn-primary px-3 d-none d-lg-flex">Login</a>
+            {% endif %}
+        </div>
+    </nav>
+</div>
+<!-- Navbar End -->
+
+<div class="container-xxl bg-white p-0">
+
+    <!-- Spinner Start -->
+    <div id="spinner"
+         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
     </div>
-    <!-- Navbar End -->
+    <!-- Spinner End -->
 
-    <div class="container-xxl bg-white p-0">
-
-        <!-- Spinner Start -->
-        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
+    <!-- Login Section Start -->
+    <div class="container d-flex align-items-center justify-content-center min-vh-100 wow fadeIn" data-wow-delay="0.1s">
+        <div class="col-md-6 col-lg-5 shadow p-5 rounded bg-light">
+            <div class="text-center mb-4">
+                <h2 class="text-primary">Welcome!</h2>
+                <p class="mb-0">Login to continue</p>
+            </div>
+            <form method="POST" action="{{ url_for('login.login') }}">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="login_id" name="login_id" placeholder="login_id"
+                           required>
+                    <label for="login_id"><i class="fa fa-user me-2"></i>ID</label>
+                </div>
+                <div class="form-floating mb-4">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+                           required>
+                    <label for="password"><i class="fa fa-lock me-2"></i>Password</label>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-3">Login</button>
+            </form>
+            <div class="text-center mt-3">
+                <p class="mb-0">Don't have an account? <a href="{{ url_for('login.user_register') }}"
+                                                          class="text-primary">회원가입</a></p>
             </div>
         </div>
-        <!-- Spinner End -->
-
-        <!-- Login Section Start -->
-        <div class="container d-flex align-items-center justify-content-center min-vh-100 wow fadeIn" data-wow-delay="0.1s">
-            <div class="col-md-6 col-lg-5 shadow p-5 rounded bg-light">
-                <div class="text-center mb-4">
-                    <h2 class="text-primary">Welcome!</h2>
-                    <p class="mb-0">Login to continue</p>
-                </div>
-                <form method="POST" action="{{ url_for('login.login') }}">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="login_id" name="login_id" placeholder="login_id" required>
-                        <label for="login_id"><i class="fa fa-user me-2"></i>ID</label>
-                    </div>
-                    <div class="form-floating mb-4">
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
-                        <label for="password"><i class="fa fa-lock me-2"></i>Password</label>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100 py-3">Login</button>
-                </form>
-                <div class="text-center mt-3">
-                    <p class="mb-0">Don't have an account? <a href="{{ url_for('login.user_register') }}" class="text-primary">회원가입</a></p>
-                </div>
-            </div>
-        </div>
-        <!-- Login Section End -->
-
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
     </div>
+    <!-- Login Section End -->
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="{{ url_for('static', filename='lib/wow/wow.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='lib/easing/easing.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='lib/waypoints/waypoints.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='lib/owlcarousel/owl.carousel.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+</div>
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="{{ url_for('static', filename='lib/wow/wow.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/easing/easing.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/waypoints/waypoints.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/owlcarousel/owl.carousel.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 
 </html>

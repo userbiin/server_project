@@ -10,97 +10,100 @@
     <!-- 외부 폰트/아이콘 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap"
+          rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Navbar Start -->
-    <div class="container-fluid nav-bar bg-transparent">
-        <nav class="navbar navbar-expand-lg bg-white navbar-light py-0 px-4">
-            <a href="index.html" class="navbar-brand d-flex align-items-center text-center">
-                <div class="icon p-2 me-2">
-                    <img class="img-fluid" src="{{ url_for('static', filename='img/icon-deal.png') }}" alt="Icon" style="width: 30px; height: 30px;">
-                </div>
-                <h1 class="m-0 text-primary">MAKE FRIEND!</h1>
-            </a>
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav ms-auto">
-                    <a href="index.html" class="nav-item nav-link active">Home</a>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Search</a>
-                        <div class="dropdown-menu rounded-0 m-0">
-                            <a href="{{ url_for('mbti_feature.mbti_feature') }}" class="dropdown-item">MBTI feautre</a>
-                            <a href="{{ url_for('friend.show_friends_page')}}" class="dropdown-item">Search Friend</a>
-                            <a href="{{ url_for('find.user_find')}}" class="dropdown-item">Search User</a>
-                        </div>
-                    </div>
-                    {% if session.get('user_id') %}
-                        <a href="{{ url_for('feed.feed') }}" class="nav-item nav-link">My Feed</a>
-                    {% endif %}
+<!-- Navbar Start -->
+<div class="container-fluid nav-bar bg-transparent">
+    <nav class="navbar navbar-expand-lg bg-white navbar-light py-0 px-4">
+        <a href="{{ url_for('index') }}" class="navbar-brand d-flex align-items-center text-center">
+            <div class="icon p-2 me-2">
+                <img class="img-fluid" src="{{ url_for('static', filename='img/icon-deal.png') }}" alt="Icon"
+                     style="width: 30px; height: 30px;">
+            </div>
+            <h1 class="m-0 text-primary">MAKE FRIEND!</h1>
+        </a>
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto">
+                <a href="{{ url_for('index') }}" class="nav-item nav-link active">Home</a>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Search</a>
+                    <div class="dropdown-menu rounded-0 m-0">
+                        <a href="{{ url_for('mbti_feature.mbti_feature') }}" class="dropdown-item">MBTI feautre</a>
+                        <a href="{{ url_for('friend.show_friends_page') }}" class="dropdown-item">Search Friend</a>
+                        <a href="{{ url_for('find.user_find') }}" class="dropdown-item">Search User</a>
 
-                    {% if session.get('user_id') %}
-                        <a href="{{ url_for('login.mypage') }}" class="nav-item nav-link active">MYPAGE</a>
-                    {% endif %}
-                    <a href="contact.html" class="nav-item nav-link">Feed</a>
+                    </div>
                 </div>
-                    
-                <!-- 로그인 여부에 따라 버튼 변경 -->
                 {% if session.get('user_id') %}
-                    <a href="{{ url_for('login.logout') }}" class="btn btn-primary px-3 d-none d-lg-flex">Logout</a>
-                {% else %}
-                    <a href="{{ url_for('login.login') }}" class="btn btn-primary px-3 d-none d-lg-flex">Login</a>
+                    <a href="{{ url_for('feed.feed') }}" class="nav-item nav-link">My Feed</a>
+                {% endif %}
+                <a href="{{ url_for('feed.feed_search') }}" class="nav-item nav-link">Feed</a>
+                {% if session.get('user_id') %}
+                    <a href="{{ url_for('login.mypage') }}" class="nav-item nav-link">MYPAGE</a>
                 {% endif %}
             </div>
-        </nav>
-    </div>
-    <!-- Navbar End -->
+
+            <!-- 로그인 여부에 따라 버튼 변경 -->
+            {% if session.get('user_id') %}
+                <a href="{{ url_for('login.logout') }}" class="btn btn-primary px-3 d-none d-lg-flex">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login.login') }}" class="btn btn-primary px-3 d-none d-lg-flex">Login</a>
+            {% endif %}
+        </div>
+    </nav>
+</div>
+<!-- Navbar End -->
 
 
-    <!-- 히어로 영역 -->
-    <section class="hero">
-  <div class="container-fluid header bg-white p-0">
-    <div class="container">
-    <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
+<!-- 히어로 영역 -->
+<section class="hero">
+    <div class="container-fluid header bg-white p-0">
+        <div class="container">
+            <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
 
-      <div class="col text-center py-5">
-        <h1>Find A <span class="highlight">Perfect Friends</span><br>matching my MBTI</h1>
-        <p>MBTI에 기반한 사용자를 쉽게 찾을 수 있어요!</p>
-        <form method="post" class="d-flex justify-content-center mt-4">
-          <input type="text" name="my_mbti" class="form-control w-25 me-2" placeholder="당신의 MBTI를 입력하세요" required>
-          <button type="submit" class="btn btn-primary">검색</button>
-        </form>
-      </div>
+                <div class="col text-center py-5">
+                    <h1>Find A <span class="highlight">Perfect Friends</span><br>matching my MBTI</h1>
+                    <p>MBTI에 기반한 사용자를 쉽게 찾을 수 있어요!</p>
+                    <form method="post" class="d-flex justify-content-center mt-4">
+                        <input type="text" name="my_mbti" class="form-control w-25 me-2" placeholder="당신의 MBTI를 입력하세요"
+                               required>
+                        <button type="submit" class="btn btn-primary">검색</button>
+                    </form>
+                </div>
 
-    </div>
-  </div>
+            </div>
+        </div>
 </section>
 
 
-    {% if compatible %}
+{% if compatible %}
     <div class="container py-5">
         <div class="text-center mb-5">
             <h2 class="fw-bold text-dark">{{ my_mbti|upper }}와 궁합이 맞는 MBTI</h2>
         </div>
         <div class="row g-4 justify-content-center">
             {% for mbti in compatible %}
-            <div class="col-lg-4 col-md-4 col-sm-6">
-                <a href="/results?mbti={{ mbti }}" class="text-decoration-none">
-                    <div class="card mbti-card text-center p-4">
-                        <img src="{{ url_for('static', filename='img/mbti/' + mbti|lower + '.png') }}"
-                             alt="{{ mbti }}" class="mx-auto mb-3" style="height: 120px; object-fit: contain;">
-                        <h5 class="mbti-label">{{ mbti.upper() }}</h5>
-                    </div>
-                </a>
-            </div>
-            {% endfor %}           
-        </div>    
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <a href="/results?mbti={{ mbti }}" class="text-decoration-none">
+                        <div class="card mbti-card text-center p-4">
+                            <img src="{{ url_for('static', filename='img/mbti/' + mbti|lower + '.png') }}"
+                                 alt="{{ mbti }}" class="mx-auto mb-3" style="height: 120px; object-fit: contain;">
+                            <h5 class="mbti-label">{{ mbti.upper() }}</h5>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
     </div>
-    {% endif %}
+{% endif %}
 
-    <!-- JS 불러오기 -->
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<!-- JS 불러오기 -->
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>

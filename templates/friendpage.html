@@ -11,7 +11,8 @@
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap"
+          rel="stylesheet">
 
     <!-- Icon Font Stylesheet (CDN은 그대로) -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -28,139 +29,140 @@
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 </head>
 <body>
+<!-- Navbar Start -->
+<div class="container-fluid nav-bar bg-transparent">
+    <nav class="navbar navbar-expand-lg bg-white navbar-light py-0 px-4">
+        <a href="{{ url_for('index') }}" class="navbar-brand d-flex align-items-center text-center">
+            <div class="icon p-2 me-2">
+                <img class="img-fluid" src="{{ url_for('static', filename='img/icon-deal.png') }}" alt="Icon"
+                     style="width: 30px; height: 30px;">
+            </div>
+            <h1 class="m-0 text-primary">MAKE FRIEND!</h1>
+        </a>
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto">
+                <a href="{{ url_for('index') }}" class="nav-item nav-link active">Home</a>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Search</a>
+                    <div class="dropdown-menu rounded-0 m-0">
+                        <a href="{{ url_for('mbti_feature.mbti_feature') }}" class="dropdown-item">MBTI feautre</a>
+                        <a href="{{ url_for('friend.show_friends_page') }}" class="dropdown-item">Search Friend</a>
+                        <a href="{{ url_for('find.user_find') }}" class="dropdown-item">Search User</a>
 
-    <div class="container-fluid nav-bar bg-transparent">
-        <nav class="navbar navbar-expand-lg bg-white navbar-light py-0 px-4">
-            <a href="index.html" class="navbar-brand d-flex align-items-center text-center">
-                <div class="icon p-2 me-2">
-                    <img class="img-fluid" src="{{ url_for('static', filename='img/icon-deal.png') }}" alt="Icon" style="width: 30px; height: 30px;">
-                </div>
-                <h1 class="m-0 text-primary">MAKE FRIEND!</h1>
-            </a>
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav ms-auto">
-                    <a href="index.html" class="nav-item nav-link active">Home</a>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Search</a>
-                        <div class="dropdown-menu rounded-0 m-0">
-                            <a href="{{ url_for('mbti_feature.mbti_feature') }}" class="dropdown-item">MBTI feautre</a>
-                            <a href="{{ url_for('friend.show_friends_page')}}" class="dropdown-item">Search Friend</a>
-                            <a href="{{ url_for('find.user_find')}}" class="dropdown-item">Search User</a>
-                        </div>
                     </div>
-                    {% if session.get('user_id') %}
-                        <a href="{{ url_for('feed.feed') }}" class="nav-item nav-link">My Feed</a>
-                    {% endif %}
-
-                    {% if session.get('user_id') %}
-                        <a href="{{ url_for('login.mypage') }}" class="nav-item nav-link active">MYPAGE</a>
-                    {% endif %}
-                    <a href="contact.html" class="nav-item nav-link">Feed</a>
                 </div>
-                    
-                <!-- 로그인 여부에 따라 버튼 변경 -->
                 {% if session.get('user_id') %}
-                    <a href="{{ url_for('login.logout') }}" class="btn btn-primary px-3 d-none d-lg-flex">Logout</a>
-                {% else %}
-                    <a href="{{ url_for('login.login') }}" class="btn btn-primary px-3 d-none d-lg-flex">Login</a>
+                    <a href="{{ url_for('feed.feed') }}" class="nav-item nav-link">My Feed</a>
+                {% endif %}
+                <a href="{{ url_for('feed.feed_search') }}" class="nav-item nav-link">Feed</a>
+                {% if session.get('user_id') %}
+                    <a href="{{ url_for('login.mypage') }}" class="nav-item nav-link">MYPAGE</a>
                 {% endif %}
             </div>
-        </nav>
-    </div>
-    <!-- Navbar End -->
 
-    <!--page header-->
-    <div class="container mt-5" style="margin-top: 100px;">
-        <h1 class="text-center mb-4">👥 Search my Friend!</h1>
+            <!-- 로그인 여부에 따라 버튼 변경 -->
+            {% if session.get('user_id') %}
+                <a href="{{ url_for('login.logout') }}" class="btn btn-primary px-3 d-none d-lg-flex">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login.login') }}" class="btn btn-primary px-3 d-none d-lg-flex">Login</a>
+            {% endif %}
+        </div>
+    </nav>
+</div>
+<!-- Navbar End -->
 
-        <!-- 친구 검색 -->
-        <section class="mb-5" style="margin-top: 70px;">
-            <h2>🔍 친구 검색</h2>
-            <form method="POST" action="/search_user" class="d-flex gap-2">
-                <input class="form-control" type="text" name="username" placeholder="사용자 이름 입력">
-                <button class="btn btn-primary" type="submit">search</button>
-            </form>
+<!--page header-->
+<div class="container mt-5" style="margin-top: 100px;">
+    <h1 class="text-center mb-4">👥 Search my Friend!</h1>
 
-            {% if search_result %}
-                <h3 class="mt-4">🔍 검색 결과</h3>
-                <ul class="list-group mt-2">
+    <!-- 친구 검색 -->
+    <section class="mb-5" style="margin-top: 70px;">
+        <h2>🔍 친구 검색</h2>
+        <form method="POST" action="/search_user" class="d-flex gap-2">
+            <input class="form-control" type="text" name="username" placeholder="사용자 이름 입력">
+            <button class="btn btn-primary" type="submit">search</button>
+        </form>
+
+        {% if search_result %}
+            <h3 class="mt-4">🔍 검색 결과</h3>
+            <ul class="list-group mt-2">
                 {% for user in search_result %}
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                    {{ user.name }} (MBTI: {{ user.mbti }})
-                    <form method="POST" action="/request_friend">
-                        <input type="hidden" name="friend_id" value="{{ user.id }}">
-                        <button class="btn btn-outline-success btn-sm">친구 요청</button>
-                    </form>
+                        {{ user.name }} (MBTI: {{ user.mbti }})
+                        <form method="POST" action="/request_friend">
+                            <input type="hidden" name="friend_id" value="{{ user.id }}">
+                            <button class="btn btn-outline-success btn-sm">친구 요청</button>
+                        </form>
                     </li>
-            {% endfor %}
+                {% endfor %}
             </ul>
-            {% elif searched %}
-                <p class="text-danger mt-3">❌ 사용자를 찾을 수 없습니다.</p>
-            {% endif %}
+        {% elif searched %}
+            <p class="text-danger mt-3">❌ 사용자를 찾을 수 없습니다.</p>
+        {% endif %}
 
-        </section>
+    </section>
 
-        <!-- 받은 친구 요청 -->
-        <section class="mb-5">
-            <h2>받은 친구 요청</h2>
-            {% if pending_requests %}
-                <ul class="list-group">
-                    {% for friend in pending_requests %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            {{ friend.name }} (MBTI: {{ friend.mbti }})
-                            <div>
-                                <form method="POST" action="/delete_friend/{{ friend.id }}" style="display:inline;">
-                                    <button class="btn btn-outline-danger btn-sm" type="submit">삭제</button>
-                                </form>
-                                <form method="POST" action="/accept_friend/{{ friend.id }}" style="display:inline;">
-                                    <button class="btn btn-outline-primary btn-sm" type="submit">수락</button>
-                                </form>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>등록된 친구 요청이 없습니다.</p>
-            {% endif %}
-        </section>
-    </div>
+    <!-- 받은 친구 요청 -->
+    <section class="mb-5">
+        <h2>받은 친구 요청</h2>
+        {% if pending_requests %}
+            <ul class="list-group">
+                {% for friend in pending_requests %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ friend.name }} (MBTI: {{ friend.mbti }})
+                        <div>
+                            <form method="POST" action="/delete_friend/{{ friend.id }}" style="display:inline;">
+                                <button class="btn btn-outline-danger btn-sm" type="submit">삭제</button>
+                            </form>
+                            <form method="POST" action="/accept_friend/{{ friend.id }}" style="display:inline;">
+                                <button class="btn btn-outline-primary btn-sm" type="submit">수락</button>
+                            </form>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>등록된 친구 요청이 없습니다.</p>
+        {% endif %}
+    </section>
+</div>
 
-    <!-- Footer Start -->
-        <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
-            <div class="container py-5">
-                <div class="row g-5">
-                    <div class="col-lg-3 col-md-6">
-                        <h5 class="text-white mb-4">Get In Touch</h5>
-                        <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i> Sangdo-ro 369, Seoul, KOREA</p>
-                        <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                        <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
-                    </div>
-                </div>
+<!-- Footer Start -->
+<div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container py-5">
+        <div class="row g-5">
+            <div class="col-lg-3 col-md-6">
+                <h5 class="text-white mb-4">Get In Touch</h5>
+                <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i> Sangdo-ro 369, Seoul, KOREA</p>
+                <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
+                <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
             </div>
-            <div class="container">
-                <div class="copyright">
-                    <div class="row">
-                        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                            <a class="border-bottom" href="#"></a>, All Right Reserved. 
-							
-							<!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-							Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
-                        </div>
-                        <div class="col-md-6 text-center text-md-end">
-                            <div class="footer-menu">
-                                <a href="">Home</a>
-                                <a href="">Cookies</a>
-                                <a href="">Help</a>
-                                <a href="">FQAs</a>
-                            </div>
-                        </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="copyright">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <a class="border-bottom" href="#"></a>, All Right Reserved.
+
+                    <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                    Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <div class="footer-menu">
+                        <a href="">Home</a>
+                        <a href="">Cookies</a>
+                        <a href="">Help</a>
+                        <a href="">FQAs</a>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Footer End -->
+    </div>
+</div>
+<!-- Footer End -->
 </body>
 </html>
