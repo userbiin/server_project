@@ -15,7 +15,7 @@ cursor = db.cursor()
 def feed():
     CURRENT_USER_ID = session.get('user_id')
     if not CURRENT_USER_ID:
-        return redirect(url_for('login'))
+        return redirect(url_for('login.login'))
     if (request.method == 'GET'):
         # user_id에 해당하는 피드 테이블 불러오기
         cursor.execute("SELECT * FROM feeds WHERE user_id=%s", (CURRENT_USER_ID,))

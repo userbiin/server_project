@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI 친구 찾기</title>
+    <!-- CSS 불러오기 -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <!-- 외부 폰트/아이콘 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar Start -->
+<div class="container mt-3">
+  <nav class="navbar navbar-expand-lg bg-white navbar-light shadow-sm rounded py-1"> <!-- py-1로 높이 줄임 -->
+    <a href="/" class="navbar-brand d-flex align-items-center text-center">
+      <div class="icon p-1 me-1"> <!-- 여백 줄임 -->
+        <img class="img-fluid" src="{{ url_for('static', filename='img/head.png') }}" alt="Logo" style="width: 30px; height: 30px";> <!-- 로고 크기 줄임 -->
+      </div>
+     <h1 class="m-0 text-primary">MAKE FRIEND!</h1>
+    </a>
+
+    <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <div class="navbar-nav ms-auto">
+        <a href="#" class="nav-item nav-link active">HOME</a>
+        <a href="#" class="nav-item nav-link">ABOUT</a>
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">SEARCH</a>
+          <div class="dropdown-menu rounded-0 m-0">
+            <a href="#" class="dropdown-item">MBTI 검색</a>
+          </div>
+        </div>
+        <a href="#" class="nav-item nav-link">CONTACT</a>
+      </div>
+      <a href="#" class="btn btn-primary px-2 py-1 ms-2" style="font-size: 0.85rem;">Login</a> <!-- 버튼도 줄임 -->
+    </div>
+  </nav>
+</div>
+
+<!-- Navbar End -->
+
+
+    <!-- 히어로 영역 -->
+     <section class="hero">
+  <div class="container-fluid header bg-white p-0">
+    <div class="container">
+    <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
+
+      <div class="col text-center py-5">
+        <h1>Find A <span class="highlight">Perfect Friends</span><br>matching my MBTI</h1>
+        <p>MBTI에 기반한 사용자를 쉽게 찾을 수 있어요!</p>
+        <form method="post" class="d-flex justify-content-center mt-4">
+          <input type="text" name="my_mbti" class="form-control w-25 me-2" placeholder="당신의 MBTI를 입력하세요" required>
+          <button type="submit" class="btn btn-primary">검색</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+    {% if compatible %}
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-dark">{{ my_mbti|upper }}와 궁합이 맞는 MBTI</h2>
+        </div>
+        <div class="row g-4 justify-content-center">
+            {% for mbti in compatible %}
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <a href="/results?mbti={{ mbti }}" class="text-decoration-none">
+                    <div class="card mbti-card text-center p-4">
+                        <img src="{{ url_for('static', filename='img/mbti/' + mbti|lower + '.png') }}"
+                             alt="{{ mbti }}" class="mx-auto mb-3" style="height: 120px; object-fit: contain;">
+                        <h5 class="mbti-label">{{ mbti.upper() }}</h5>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}           
+        </div>    
+    </div>
+    {% endif %}
+
+    <!-- JS 불러오기 -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -59,12 +59,13 @@
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Search</a>
                             <div class="dropdown-menu rounded-0 m-0">
                                 <a href="{{ url_for('mbti_feature.mbti_feature') }}" class="dropdown-item">MBTI feautre</a>
-                                <a href="{{ url_for('friend.show_friends_page')}}" class="dropdown-item"> Find Friend</a>
+                                <a href="{{ url_for('friend.show_friends_page')}}" class="dropdown-item">Search Friend</a>
+                                <a href="property-agent.html" class="dropdown-item">Property Agent</a>
                             </div>
                         </div>
                         <a href="contact.html" class="nav-item nav-link">Feed</a>
                     </div>
-                    <a href="{{ url_for('login.home')}}" class="btn btn-primary px-3 d-none d-lg-flex">Login</a>
+                    <a href="{{ url_for('login.login')}}" class="btn btn-primary px-3 d-none d-lg-flex">Login</a>
                 </div>
             </nav>
         </div>
