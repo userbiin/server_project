@@ -29,31 +29,42 @@
     <!-- Navbar Start -->
     <div class="container-fluid nav-bar bg-transparent">
         <nav class="navbar navbar-expand-lg bg-white navbar-light py-0 px-4">
-            <a href="/home" class="navbar-brand d-flex align-items-center text-center">
+            <a href="index.html" class="navbar-brand d-flex align-items-center text-center">
                 <div class="icon p-2 me-2">
                     <img class="img-fluid" src="{{ url_for('static', filename='img/icon-deal.png') }}" alt="Icon" style="width: 30px; height: 30px;">
                 </div>
-                <h1 class="m-0 text-primary">MBTI SNS</h1>
+                <h1 class="m-0 text-primary">MAKE FRIEND!</h1>
             </a>
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto">
-                    <a href="{{ url_for('login.home') }}" class="nav-item nav-link">HOME</a>
-                    <a href="{{ url_for('login.mypage') }}" class="nav-item nav-link active">MYPAGE</a>
-                    <a href="/mbtiFeature" class="nav-item nav-link">MBTI</a>
-                    <a href="/myFeed" class="nav-item nav-link">FEED</a>
-                    <a href="/friends" class="nav-item nav-link">FRIEND</a>
-                </div>
+                    <a href="index.html" class="nav-item nav-link active">Home</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Search</a>
+                        <div class="dropdown-menu rounded-0 m-0">
+                            <a href="{{ url_for('mbti_feature.mbti_feature') }}" class="dropdown-item">MBTI feautre</a>
+                            <a href="{{ url_for('friend.show_friends_page')}}" class="dropdown-item">Search Friend</a>
+                            <a href="{{ url_for('find.user_find')}}" class="dropdown-item">Search User</a>
+                        </div>
+                    </div>
+                    {% if session.get('user_id') %}
+                        <a href="{{ url_for('feed.feed') }}" class="nav-item nav-link">My Feed</a>
+                    {% endif %}
 
+                    {% if session.get('user_id') %}
+                        <a href="{{ url_for('login.mypage') }}" class="nav-item nav-link active">MYPAGE</a>
+                    {% endif %}
+                    <a href="contact.html" class="nav-item nav-link">Feed</a>
+                </div>
+                    
                 <!-- 로그인 여부에 따라 버튼 변경 -->
                 {% if session.get('user_id') %}
-                    <a href="{{ url_for('login.logout') }}" class="btn btn-primary px-3 py-4 d-none d-lg-flex">Logout</a>
+                    <a href="{{ url_for('login.logout') }}" class="btn btn-primary px-3 d-none d-lg-flex">Logout</a>
                 {% else %}
-                    <a href="{{ url_for('login.login') }}" class="btn btn-primary px-3 py-4 d-none d-lg-flex">Login</a>
+                    <a href="{{ url_for('login.login') }}" class="btn btn-primary px-3 d-none d-lg-flex">Login</a>
                 {% endif %}
-
             </div>
         </nav>
     </div>

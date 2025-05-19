@@ -84,7 +84,7 @@ def accept_friend(request_id):
 def delete_friend(friend_id):
     CURRENT_USER_ID = session.get('user_id')
     if not CURRENT_USER_ID:
-        return redirect(url_for('login'))
+        return redirect(url_for('login.login')) 
 
     cursor.execute("""
         DELETE FROM friends
@@ -99,7 +99,7 @@ def delete_friend(friend_id):
 def search_user():
     CURRENT_USER_ID = session.get('user_id')
     if not CURRENT_USER_ID:
-        return redirect(url_for('login'))
+        return redirect(url_for('login.login'))
 
     username = request.form['username']
 
