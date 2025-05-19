@@ -24,9 +24,11 @@ for mbti in mbtiDetailList:
 
 @mbti_feature_bp.route('/mbtiFeature', methods=['GET', 'POST'])
 def mbti_feature():
-    CURRENT_USER_ID = session.get('user_id')
-    if not CURRENT_USER_ID:
+    if 'login_id' not in session:
         return redirect(url_for('login.login'))
+
+    CURRENT_USER_ID = session['login_id']  # 현재 로그인 사용자 ID
+
     if (request.method == 'GET'):
         mbti = request.args.get("type")
         if mbti:

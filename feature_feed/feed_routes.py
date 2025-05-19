@@ -13,9 +13,10 @@ cursor = db.cursor()
 
 @feed_bp.route('/myFeed', methods=['GET', 'POST'])
 def feed():
-    CURRENT_USER_ID = session.get('user_id')
-    if not CURRENT_USER_ID:
+    if 'login_id' not in session:
         return redirect(url_for('login.login'))
+
+    CURRENT_USER_ID = session['login_id'] #현재 로그인 사용자 ID
     if (request.method == 'GET'):
         # user_id에 해당하는 피드 테이블 불러오기
         cursor.execute("SELECT * FROM feeds WHERE user_id=%s", (CURRENT_USER_ID,))
@@ -60,6 +61,8 @@ def feed():
 
 @feed_bp.route('/feedSearch')
 def feed_search():
+    if 'login_id' not in session:
+        return redirect(url_for('login.login'))
     friend_id = request.args.get('friend_id')
     table = []
     if friend_id:
