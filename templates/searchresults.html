@@ -1,118 +1,6 @@
-<!-- <!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ mbti.upper() }}를 가진 사용자 목록</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-
-    <style>
-        body {
-            background-color: #f5fef9;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 50px;
-            font-size: 28px;
-            font-weight: 700;
-            color: #0E2E50;
-        }
-
-        .card-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            justify-content: center;
-        }
-
-        .user-card {
-            width: 280px;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-            transition: 0.3s ease-in-out;
-            text-align: center;
-            padding: 30px 20px;
-        }
-
-        .user-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
-        }
-
-        .user-card img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 20px;
-        }
-
-        .user-name {
-            font-size: 20px;
-            font-weight: 600;
-            color: #0E2E50;
-        }
-
-        .user-mbti {
-            font-size: 16px;
-            color: #00B98E;
-            margin-bottom: 10px;
-        }
-
-        .social-icons i {
-            font-size: 18px;
-            margin: 0 8px;
-            color: #00B98E;
-            transition: 0.3s;
-        }
-
-        .social-icons i:hover {
-            color: #0E2E50;
-        }
-
-        .back-link {
-            display: block;
-            margin: 40px auto 0;
-            text-align: center;
-            font-size: 16px;
-            text-decoration: none;
-            color: #00B98E;
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-    <div class="container py-5">
-        <h2 class="section-title">{{ mbti.upper() }}를 가진 사용자 목록</h2>
-        <div class="card-container">
-            {% for user in results %}
-            <div class="user-card">
-                <img src="
-    {{ url_for('static', filename='img/' + ('dave.png' if user[0].lower() == 'dave' else 'profile_default.png')) }}" alt="user photo">
-                <div class="user-name">{{ user[0] }}</div>
-                <div class="user-mbti">{{ user[1].upper() }}</div>
-                <div class="social-icons">
-                    <i class="fab fa-facebook-f"></i>
-                    <i class="fab fa-twitter"></i>
-                    <i class="fab fa-instagram"></i>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        <a href="{{ url_for('index') }}" class="back-link">← 돌아가기</a>
-    </div>
-</body>
-</html> -->
-
-
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <title>{{ mbti.upper() }}를 가진 사용자 목록</title>
@@ -121,7 +9,8 @@
     <!-- CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
@@ -205,75 +94,83 @@
         }
     </style>
 </head>
+
 <body>
-
-<!-- Navbar Start -->
-<div class="container-fluid nav-bar bg-transparent">
-    <nav class="navbar navbar-expand-lg bg-white navbar-light py-0 px-4">
-        <a href="{{ url_for('index') }}" class="navbar-brand d-flex align-items-center text-center">
-            <div class="icon p-2 me-2">
-                <img class="img-fluid" src="{{ url_for('static', filename='img/icon-deal.png') }}" alt="Icon"
-                     style="width: 30px; height: 30px;">
-            </div>
-            <h1 class="m-0 text-primary">MAKE FRIEND!</h1>
-        </a>
-        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto">
-                <a href="{{ url_for('index') }}" class="nav-item nav-link active">Home</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Search</a>
-                    <div class="dropdown-menu rounded-0 m-0">
-                        <a href="{{ url_for('mbti_feature.mbti_feature') }}" class="dropdown-item">MBTI feautre</a>
-                        <a href="{{ url_for('friend.show_friends_page') }}" class="dropdown-item">Search Friend</a>
-                        <a href="{{ url_for('find.user_find') }}" class="dropdown-item">Search User</a>
-
-                    </div>
+   <!-- Navbar Start -->
+    <div class="container-fluid nav-bar bg-transparent">
+        <nav class="navbar navbar-expand-lg bg-white navbar-light py-0 px-4">
+            <a href="{{ url_for('index') }}" class="navbar-brand d-flex align-items-center text-center">
+                <div class="icon p-2 me-2">
+                    <img class="img-fluid" src="{{ url_for('static', filename='img/icon-deal.png') }}" alt="Icon"
+                         style="width: 30px; height: 30px;">
                 </div>
+                <h1 class="m-0 text-primary">MAKE FRIEND!</h1>
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto">
+                    <a href="{{ url_for('index') }}" class="nav-item nav-link active">Home</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Search</a>
+                        <div class="dropdown-menu rounded-0 m-0">
+                            <a href="{{ url_for('mbti_feature.mbti_feature') }}" class="dropdown-item">MBTI feautre</a>
+                            <a href="{{ url_for('friend.show_friends_page') }}" class="dropdown-item">Search Friend</a>
+                            <a href="{{ url_for('find.user_find') }}" class="dropdown-item">Search User</a>
+
+                        </div>
+                    </div>
+                    {% if session.get('user_id') %}
+                        <a href="{{ url_for('feed.feed') }}" class="nav-item nav-link">My Feed</a>
+                    {% endif %}
+                    <a href="{{ url_for('feed.feed_search') }}" class="nav-item nav-link">Feed</a>
+                    {% if session.get('user_id') %}
+                        <a href="{{ url_for('login.mypage') }}" class="nav-item nav-link">MYPAGE</a>
+                    {% endif %}
+                </div>
+
+                <!-- 로그인 여부에 따라 버튼 변경 -->
                 {% if session.get('user_id') %}
-                    <a href="{{ url_for('feed.feed') }}" class="nav-item nav-link">My Feed</a>
-                {% endif %}
-                <a href="{{ url_for('feed.feed_search') }}" class="nav-item nav-link">Feed</a>
-                {% if session.get('user_id') %}
-                    <a href="{{ url_for('login.mypage') }}" class="nav-item nav-link">MYPAGE</a>
+                    <a href="{{ url_for('login.logout') }}" class="btn btn-primary px-3 d-none d-lg-flex">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login.login') }}" class="btn btn-primary px-3 d-none d-lg-flex">Login</a>
                 {% endif %}
             </div>
+        </nav>
+    </div>
+    <!-- Navbar End -->
 
-            <!-- 로그인 여부에 따라 버튼 변경 -->
-            {% if session.get('user_id') %}
-                <a href="{{ url_for('login.logout') }}" class="btn btn-primary px-3 d-none d-lg-flex">Logout</a>
-            {% else %}
-                <a href="{{ url_for('login.login') }}" class="btn btn-primary px-3 d-none d-lg-flex">Login</a>
-            {% endif %}
-        </div>
-    </nav>
-</div>
-<!-- Navbar End -->
 
-<!-- 본문 -->
-<div class="container py-5" style="margin-top: 100px;">
-    <h2 class="section-title">{{ mbti.upper() }}를 가진 사용자 목록</h2>
-    <div class="card-container">
-        {% for user in results %}
+    <!-- 본문 -->
+    <div class="container py-5" style="margin-top: 50px;">
+        <h2 class="section-title">{{ mbti.upper() }}를 가진 사용자 목록</h2>
+        <div class="card-container">
+            {% for user in results %}
             <div class="user-card">
-                <img src="{{ url_for('static', filename='img/' + ('dave.png' if user[0].lower() == 'dave' else 'profile_default.png')) }}"
-                     alt="user photo">
+                <img src="{{ url_for('static', filename='img/' + ('dave.png' if user[0].lower() == 'dave' else 'profile_default.png')) }}" alt="user photo">
                 <div class="user-name">{{ user[0] }}</div>
                 <div class="user-mbti">{{ user[1].upper() }}</div>
                 <div class="social-icons">
-                    <i class="fab fa-facebook-f"></i>
-                    <i class="fab fa-twitter"></i>
-                    <i class="fab fa-instagram"></i>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-    <a href="{{ url_for('index') }}" class="back-link">← 돌아가기</a>
-</div>
+                    <a href="https://www.facebook.com/?locale=ko_KR/" target="_blank">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://x.com/" target="_blank">
+                        <i class="fab fa-x-twitter"></i>
+                    </a>
+                    <a href="https://www.instagram.com/?flo=true" target="_blank">
+                         <i class="fab fa-instagram"></i>
+                    </a>
+        </div>
 
-<!-- JS -->
-<script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+            </div>
+            {% endfor %}
+        </div>
+        <a href="{{ url_for('index') }}" class="back-link">← 돌아가기</a>
+    </div>
+
+    <!-- JS -->
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 </body>
+
 </html>
