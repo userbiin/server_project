@@ -16,8 +16,7 @@ app.register_blueprint(find_bp)
 app.register_blueprint(mbti_feature_bp)
 app.register_blueprint(feed_bp)
 
-# 테스트용
-app.secret_key = 'any-random-string'  # 세션 사용을 위한 키 임시부여
+app.secret_key = 'any-random-string'  
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 @app.route('/')
