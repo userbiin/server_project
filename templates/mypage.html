@@ -106,7 +106,11 @@
 
     <ul class="list-group">
         {% for friend in friends %}
-            <li class="list-group-item">{{ friend.name }} (MBTI: {{ friend.mbti }})</li>
+            <li class="list-group-item">{{ friend.name }} (MBTI: {{ friend.mbti }})
+                <form method="POST" action="{{ url_for('friend.delete_friend', friend_id=friend.id) }}" style="display:inline;">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">삭제</button>
+                </form>
+            </li>
         {% else %}
             <li class="list-group-item">친구가 없습니다.</li>
         {% endfor %}

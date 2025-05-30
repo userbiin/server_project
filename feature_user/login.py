@@ -20,14 +20,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 #mysql 연결
-db = pymysql.connect(
-    host='127.0.0.1',  #codespace환경에서 TCP연결임
-    user='flaskuser',
-    password='1234',
-    database='mbti_db',
-    charset='utf8mb4',
-    cursorclass=pymysql.cursors.DictCursor
-)
+from db import db
 
 #테이블 생성
 def create_users_table():
